@@ -14,7 +14,7 @@ const styles: Record<string, React.CSSProperties> = {
     height: '100%',
     flexWrap: 'wrap',
     boxSizing: 'border-box',
-    padding: '3px',
+    padding: '3px'
   },
   grid: {
     display: 'flex',

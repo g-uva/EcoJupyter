@@ -17,18 +17,18 @@ const barChartsParams = {
   series: [
     { data: [3, 4, 1, 6, 5], label: 'A' },
     { data: [4, 3, 1, 5, 8], label: 'B' },
-    { data: [4, 2, 5, 4, 1], label: 'C' },
+    { data: [4, 2, 5, 4, 1], label: 'C' }
   ],
-  height: 400,
+  height: 400
 };
 const lineChartsParams = {
   series: [
     { data: [3, 4, 1, 6, 5], label: 'A', area: false, stack: 'total' },
     { data: [4, 3, 1, 5, 8], label: 'B', area: false, stack: 'total' },
-    { data: [4, 2, 5, 4, 1], label: 'C', area: false, stack: 'total' },
+    { data: [4, 2, 5, 4, 1], label: 'C', area: false, stack: 'total' }
   ],
   xAxis: [{ data: [1, 2, 3, 4, 5], type: 'linear' }],
-  height: 400,
+  height: 400
 };
 
 const scatterChartsParams = {
@@ -44,9 +44,9 @@ const scatterChartsParams = {
         { x: -7.0e-1, y: -2.7e-1, id: 6 },
         { x: -5.1e-1, y: -8.8e-1, id: 7 },
         { x: -4.0e-3, y: -1.4, id: 8 },
-        { x: -1.3, y: -2.2, id: 9 },
+        { x: -1.3, y: -2.2, id: 9 }
       ],
-      label: 'A',
+      label: 'A'
     },
     {
       data: [
@@ -59,12 +59,12 @@ const scatterChartsParams = {
         { x: -1.5, y: 1.1, id: 6 },
         { x: 1.3, y: 3.4e-1, id: 7 },
         { x: -4.2e-1, y: 1.0e-1, id: 8 },
-        { x: 5.4e-2, y: 4.0e-1, id: 9 },
+        { x: 5.4e-2, y: 4.0e-1, id: 9 }
       ],
-      label: 'B',
-    },
+      label: 'B'
+    }
   ],
-  height: 400,
+  height: 400
 };
 
 const pieChartsParams = {
@@ -73,17 +73,17 @@ const pieChartsParams = {
       data: [{ value: 5 }, { value: 10 }, { value: 15 }],
       label: 'Series 1',
       outerRadius: 80,
-      highlight: { additionalRadius: 10 },
+      highlight: { additionalRadius: 10 }
     },
     {
       data: [{ value: 5 }, { value: 10 }, { value: 15 }],
       label: 'Series 1',
       innerRadius: 90,
-      highlight: { additionalRadius: 10 },
-    },
+      highlight: { additionalRadius: 10 }
+    }
   ],
   height: 400,
-  margin: { top: 50, bottom: 50 },
+  margin: { top: 50, bottom: 50 }
 };
 
 export default function ElementHighlights() {
@@ -112,7 +112,7 @@ export default function ElementHighlights() {
           aria-label="chart type"
           fullWidth
         >
-          {['bar', 'line', 'scatter', 'pie'].map((type) => (
+          {['bar', 'line', 'scatter', 'pie'].map(type => (
             <ToggleButton key={type} value={type} aria-label="left aligned">
               {type}
             </ToggleButton>
@@ -121,12 +121,12 @@ export default function ElementHighlights() {
         {chartType === 'bar' && (
           <BarChart
             {...barChartsParams}
-            series={barChartsParams.series.map((series) => ({
+            series={barChartsParams.series.map(series => ({
               ...series,
               highlightScope: {
                 highlighted,
-                faded,
-              } as HighlightScope,
+                faded
+              } as HighlightScope
             }))}
           />
         )}
@@ -134,13 +134,13 @@ export default function ElementHighlights() {
         {chartType === 'line' && (
           <LineChart
             {...lineChartsParams}
-            series={lineChartsParams.series.map((series) => ({
+            series={lineChartsParams.series.map(series => ({
               ...series,
               area: withArea,
               highlightScope: {
                 highlighted,
-                faded,
-              } as HighlightScope,
+                faded
+              } as HighlightScope
             }))}
           />
         )}
@@ -148,12 +148,12 @@ export default function ElementHighlights() {
         {chartType === 'scatter' && (
           <ScatterChart
             {...scatterChartsParams}
-            series={scatterChartsParams.series.map((series) => ({
+            series={scatterChartsParams.series.map(series => ({
               ...series,
               highlightScope: {
                 highlighted,
-                faded,
-              } as HighlightScope,
+                faded
+              } as HighlightScope
             }))}
           />
         )}
@@ -161,12 +161,12 @@ export default function ElementHighlights() {
         {chartType === 'pie' && (
           <PieChart
             {...pieChartsParams}
-            series={pieChartsParams.series.map((series) => ({
+            series={pieChartsParams.series.map(series => ({
               ...series,
               highlightScope: {
                 highlighted,
-                faded,
-              } as HighlightScope,
+                faded
+              } as HighlightScope
             }))}
           />
         )}
@@ -182,7 +182,7 @@ export default function ElementHighlights() {
           select
           label="highlighted"
           value={highlighted}
-          onChange={(event) => setHighlighted(event.target.value)}
+          onChange={event => setHighlighted(event.target.value)}
           sx={{ minWidth: 150 }}
         >
           <MenuItem value={'none'}>none</MenuItem>
@@ -193,7 +193,7 @@ export default function ElementHighlights() {
           select
           label="faded"
           value={faded}
-          onChange={(event) => setFaded(event.target.value)}
+          onChange={event => setFaded(event.target.value)}
           sx={{ minWidth: 150 }}
         >
           <MenuItem value={'none'}>none</MenuItem>
@@ -205,7 +205,7 @@ export default function ElementHighlights() {
             control={
               <Switch
                 checked={withArea}
-                onChange={(event) => setWithArea(event.target.checked)}
+                onChange={event => setWithArea(event.target.checked)}
               />
             }
             label="Fill line area"

@@ -70,9 +70,24 @@ export default function BandHighlight() {
             value={xHighlight}
             onChange={handleChange('x')}
           >
-            <FormControlLabel value="none" control={<Radio size="small" />} label="None" slotProps={{ typography: { style: { fontSize: 11 } } }} />
-            <FormControlLabel value="line" control={<Radio size="small" />} label="Line" slotProps={{ typography: { style: { fontSize: 11 } } }} />
-            <FormControlLabel value="band" control={<Radio size="small" />} label="Band" slotProps={{ typography: { style: { fontSize: 11 } } }} />
+            <FormControlLabel
+              value="none"
+              control={<Radio size="small" />}
+              label="None"
+              slotProps={{ typography: { style: { fontSize: 11 } } }}
+            />
+            <FormControlLabel
+              value="line"
+              control={<Radio size="small" />}
+              label="Line"
+              slotProps={{ typography: { style: { fontSize: 11 } } }}
+            />
+            <FormControlLabel
+              value="band"
+              control={<Radio size="small" />}
+              label="Band"
+              slotProps={{ typography: { style: { fontSize: 11 } } }}
+            />
           </RadioGroup>
         </FormControl>
         <FormControl>
@@ -82,8 +97,18 @@ export default function BandHighlight() {
             value={yHighlight}
             onChange={handleChange('y')}
           >
-            <FormControlLabel value="none" control={<Radio size="small" />} label="None" slotProps={{ typography: { style: { fontSize: 11 } } }} />
-            <FormControlLabel value="line" control={<Radio size="small" />} label="Line" slotProps={{ typography: { style: { fontSize: 11 } } }} />
+            <FormControlLabel
+              value="none"
+              control={<Radio size="small" />}
+              label="None"
+              slotProps={{ typography: { style: { fontSize: 11 } } }}
+            />
+            <FormControlLabel
+              value="line"
+              control={<Radio size="small" />}
+              label="Line"
+              slotProps={{ typography: { style: { fontSize: 11 } } }}
+            />
           </RadioGroup>
         </FormControl>
       </Stack>

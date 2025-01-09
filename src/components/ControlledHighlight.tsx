@@ -17,24 +17,27 @@ export default function ControlledHighlight() {
   const [highlightedItem, setHighLightedItem] =
     React.useState<HighlightItemData | null>({
       seriesId: 'A',
-      dataIndex: 0,
+      dataIndex: 0
     });
   const [highlighted, setHighlighted] = React.useState('item');
   const [faded, setFaded] = React.useState('global');
 
-  const handleHighLightedSeries = (event: any, newHighLightedSeries: string) => {
+  const handleHighLightedSeries = (
+    event: any,
+    newHighLightedSeries: string
+  ) => {
     if (newHighLightedSeries !== null) {
-      setHighLightedItem((prev) => ({
+      setHighLightedItem(prev => ({
         ...prev,
-        seriesId: newHighLightedSeries,
+        seriesId: newHighLightedSeries
       }));
     }
   };
 
   const handleHighLightedItem = (event: any) => {
-    setHighLightedItem((prev) => ({
+    setHighLightedItem(prev => ({
       ...prev,
-      dataIndex: Number(event.target.value),
+      dataIndex: Number(event.target.value)
     }));
   };
 
@@ -53,7 +56,7 @@ export default function ControlledHighlight() {
             aria-label="highlighted series"
             fullWidth
           >
-            {['A', 'B'].map((type) => (
+            {['A', 'B'].map(type => (
               <ToggleButton key={type} value={type} aria-label="left aligned">
                 Series {type}
               </ToggleButton>
@@ -78,12 +81,12 @@ export default function ControlledHighlight() {
         </Stack>
         <BarChart
           {...barChartsProps}
-          series={barChartsProps.series.map((series) => ({
+          series={barChartsProps.series.map(series => ({
             ...series,
             highlightScope: {
               highlighted,
-              faded,
-            } as HighlightScope,
+              faded
+            } as HighlightScope
           }))}
           highlightedItem={highlightedItem}
           onHighlightChange={setHighLightedItem}
@@ -100,7 +103,7 @@ export default function ControlledHighlight() {
           select
           label="highlighted"
           value={highlighted}
-          onChange={(event) => setHighlighted(event.target.value)}
+          onChange={event => setHighlighted(event.target.value)}
           sx={{ minWidth: 150 }}
         >
           <MenuItem value={'none'}>none</MenuItem>
@@ -111,7 +114,7 @@ export default function ControlledHighlight() {
           select
           label="faded"
           value={faded}
-          onChange={(event) => setFaded(event.target.value)}
+          onChange={event => setFaded(event.target.value)}
           sx={{ minWidth: 150 }}
         >
           <MenuItem value={'none'}>none</MenuItem>
@@ -126,7 +129,7 @@ export default function ControlledHighlight() {
 const barChartsProps: BarChartProps = {
   series: [
     { data: [3, 4, 1, 6, 5], label: 'A', id: 'A' },
-    { data: [4, 3, 1, 5, 8], label: 'B', id: 'B' },
+    { data: [4, 3, 1, 5, 8], label: 'B', id: 'B' }
   ],
-  height: 400,
+  height: 400
 };
