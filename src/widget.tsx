@@ -4,7 +4,7 @@ import { Paper } from '@mui/material';
 
 // import BandHighLight from './components/BandHighLight';
 // import ElementHighlights from './components/ElementHighlights';
-// import MapComponent from './components/map/MapComponent';
+import MapComponent from './components/map/MapComponent';
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
@@ -35,8 +35,8 @@ function GridContent({ index }: { index: number }) {
     //   return <ElementHighlights />;
     // case 3:
     //   return <BandHighLight />;
-    // case 4:
-    //   return <MapComponent />;
+    case 1:
+      return <MapComponent />;
     default:
       return <span>{'Grid element ' + String(index)}</span>;
   }
