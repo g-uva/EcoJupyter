@@ -2,8 +2,9 @@ import React from 'react';
 import { ReactWidget } from '@jupyterlab/apputils';
 import { Paper } from '@mui/material';
 
-import BandHighLight from './components/BandHighLight';
-import ElementHighlights from './components/ElementHighlights';
+// import BandHighLight from './components/BandHighLight';
+// import ElementHighlights from './components/ElementHighlights';
+// import MapComponent from './components/map/MapComponent';
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
@@ -12,7 +13,8 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     height: '100%',
     flexWrap: 'wrap',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    padding: '3px',
   },
   grid: {
     display: 'flex',
@@ -26,22 +28,18 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 function GridContent({ index }: { index: number }) {
-  let returnValue: React.JSX.Element | null = null;
   switch (index) {
-    case 1:
-      returnValue = <BandHighLight />;
-      break;
-    case 2:
-      returnValue = <ElementHighlights />;
-      break;
-    case 3:
-      returnValue = <BandHighLight />;
-      break;
+    // case 1:
+    //   return <BandHighLight />;
+    // case 2:
+    //   return <ElementHighlights />;
+    // case 3:
+    //   return <BandHighLight />;
+    // case 4:
+    //   return <MapComponent />;
     default:
-      returnValue = <span>{'Grid element ' + String(index)}</span>;
-      break;
+      return <span>{'Grid element ' + String(index)}</span>;
   }
-  return returnValue;
 }
 
 /**
