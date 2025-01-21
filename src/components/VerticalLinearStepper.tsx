@@ -17,6 +17,7 @@ import {
   RadioGroup
 } from '@mui/material';
 import CollapsibleTable from './table/CollapsibleTable';
+import LinearBuffer from './progress/LinearProgress';
 
 type Content = { label: string; hasButtons?: boolean };
 interface ILoadProps {
@@ -127,7 +128,8 @@ function ContentHandler({
 }
 
 export default function VerticalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(2);
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [complete, setComplete] = React.useState(false);
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -141,55 +143,77 @@ export default function VerticalLinearStepper() {
 
   const handleReset = () => {
     setActiveStep(0);
+    setComplete(false);
   };
 
   return (
-    <Box sx={{ display: 'flex', width: '100%' }}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {steps.map((step, index) => (
-          <Step key={step.label}>
-            <StepLabel
-              optional={
-                index === steps.length - 1 ? (
-                  <Typography variant="caption">Last step</Typography>
-                ) : null
-              }
-            >
-              {step.label}
-            </StepLabel>
-            <StepContent>
-              <ContentHandler
-                step={activeStep}
-                triggerNextStep={handleNext}
-                handleLastStep={handleReset}
-              />
-              {step.hasButtons !== false && (
-                <Box sx={{ mb: 2 }}>
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                  </Button>
-                  <Button
-                    disabled={index === 0}
-                    onClick={handleBack}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    Back
-                  </Button>
-                </Box>
-              )}
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
+    <Grid2 sx={{ display: 'flex', width: '100%', height: '500px' }}>
+      <Grid2>
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {steps.map((step, index) => (
+            <Step key={step.label}>
+              <StepLabel
+                optional={
+                  index === steps.length - 1 ? (
+                    <Typography variant="caption">Last step</Typography>
+                  ) : null
+                }
+              >
+                {step.label}
+              </StepLabel>
+              <StepContent>
+                <ContentHandler
+                  step={activeStep}
+                  triggerNextStep={handleNext}
+                  handleLastStep={handleReset}
+                />
+                {step.hasButtons !== false && (
+                  <Box sx={{ mb: 2 }}>
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      {index === steps.length - 1 ? 'Finish' : 'Continue'}
+                    </Button>
+                    <Button
+                      disabled={index === 0}
+                      onClick={handleBack}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      Back
+                    </Button>
+                  </Box>
+                )}
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
+      </Grid2>
       {activeStep === 2 && (
-        <Paper square elevation={0} sx={{ p: 3, width: '100%' }}>
+        <Paper
+          square
+          elevation={0}
+          sx={{ p: 3, width: '100%', overflow: 'visible' }}
+        >
           <CollapsibleTable />
         </Paper>
       )}
-    </Box>
+      {activeStep === 3 && (
+        <Grid2 sx={{ width: '400px' }}>
+          {complete ? (
+            <Grid2 sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Typography>Deployment complete!</Typography>
+              <Button title="Reset" onClick={handleReset} />
+            </Grid2>
+          ) : (
+            <>
+              <Typography>Deploying...</Typography>
+              <LinearBuffer setComplete={() => setComplete(true)} />
+            </>
+          )}
+        </Grid2>
+      )}
+    </Grid2>
   );
 }

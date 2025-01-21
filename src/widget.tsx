@@ -20,7 +20,7 @@ const styles: Record<string, React.CSSProperties> = {
   grid: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     flex: '0 1 100%',
     width: '100%'
   }
@@ -28,7 +28,7 @@ const styles: Record<string, React.CSSProperties> = {
 
 function GridContent() {
   return (
-    <Grid2>
+    <Grid2 sx={{ width: '100%', px: 3, py: 5 }}>
       <VerticalLinearStepper />
     </Grid2>
   );

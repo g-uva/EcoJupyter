@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Checkbox, Grid2 } from '@mui/material';
 
 interface IData {
   sci: number;
@@ -59,8 +60,16 @@ function createData(sci: number, time: number, availability: string) {
   return row;
 }
 
-function Row({ row }: { row: IData }) {
-  const [open, setOpen] = React.useState(false);
+function Row({
+  row,
+  checkedIndex,
+  setSelectedIndex
+}: {
+  row: IData;
+  checkedIndex: boolean;
+  setSelectedIndex: () => void;
+}) {
+  const [open, setOpen] = React.useState<boolean>(false);
 
   return (
     <React.Fragment>
@@ -73,6 +82,7 @@ function Row({ row }: { row: IData }) {
           >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
+          <Checkbox checked={checkedIndex} onClick={setSelectedIndex} />
         </TableCell>
         <TableCell>{row.sci}</TableCell>
         <TableCell align="right">{row.time}</TableCell>
@@ -81,26 +91,41 @@ function Row({ row }: { row: IData }) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                Details
-              </Typography>
-              <Typography variant="subtitle1">CPU</Typography>
-              <ul>
-                <li>Usage: {row.details.cpu.usage} %</li>
-                <li>Time: {row.details.cpu.time} μs</li>
-                <li>Frequency: {row.details.cpu.frequency} GHz</li>
-              </ul>
-              <Typography variant="subtitle1">Memory</Typography>
-              <ul>
-                <li>Energy: {row.details.memory.energy} μJ</li>
-                <li>Used: {row.details.memory.used} Bytes</li>
-              </ul>
-              <Typography variant="subtitle1">Network</Typography>
-              <ul>
-                <li>IO: {row.details.network.io} B/s</li>
-                <li>Connections: {row.details.network.connections}</li>
-              </ul>
+            <Box sx={{ m: 1, display: 'flex', flexGrow: 1 }}>
+              <Grid2
+                sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
+              >
+                <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
+                  CPU
+                </Typography>
+                <ul style={{ paddingInlineStart: '10px' }}>
+                  <li>Usage: {row.details.cpu.usage} %</li>
+                  <li>Time: {row.details.cpu.time} μs</li>
+                  <li>Frequency: {row.details.cpu.frequency} GHz</li>
+                </ul>
+              </Grid2>
+              <Grid2
+                sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
+              >
+                <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
+                  Memory
+                </Typography>
+                <ul style={{ paddingInlineStart: '10px' }}>
+                  <li>Energy: {row.details.memory.energy} μJ</li>
+                  <li>Used: {row.details.memory.used} Bytes</li>
+                </ul>
+              </Grid2>
+              <Grid2
+                sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
+              >
+                <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
+                  Network
+                </Typography>
+                <ul style={{ paddingInlineStart: '10px' }}>
+                  <li>IO: {row.details.network.io} B/s</li>
+                  <li>Connections: {row.details.network.connections}</li>
+                </ul>
+              </Grid2>
             </Box>
           </Collapse>
         </TableCell>
@@ -139,6 +164,8 @@ const rows: Array<IData> = [
 ];
 
 export default function CollapsibleTable() {
+  const [checkedIndex, setCheckedIndex] = React.useState<number | null>(null);
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -152,7 +179,15 @@ export default function CollapsibleTable() {
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
-            <Row key={index} row={row} />
+            <Row
+              key={index}
+              row={row}
+              checkedIndex={index === checkedIndex}
+              setSelectedIndex={() => {
+                const newValue = index === checkedIndex ? null : index;
+                setCheckedIndex(newValue);
+              }}
+            />
           ))}
         </TableBody>
       </Table>
