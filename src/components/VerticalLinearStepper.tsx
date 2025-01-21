@@ -7,6 +7,15 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import CircularWithValueLabel from './progress/CircularWithValueLabel';
+import {
+  FormControl,
+  FormControlLabel,
+  // FormLabel,
+  Grid2,
+  Radio,
+  RadioGroup
+} from '@mui/material';
 
 type Content = { label: string; hasButtons?: boolean };
 
@@ -28,11 +37,45 @@ const steps: Array<Content> = [
 ];
 
 function StepOne() {
-  return <div>Step 1</div>;
+  return (
+    <Grid2>
+      <FormControl>
+        {/* <FormLabel id="demo-radio-buttons-group-label">
+          Methodology/approac
+        </FormLabel> */}
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue="pre-compute"
+          name="radio-buttons-group"
+        >
+          <FormControlLabel
+            value="pre-compute"
+            control={<Radio />}
+            label="Pre-Compute"
+          />
+          <FormControlLabel
+            value="sample"
+            control={<Radio />}
+            label="Sample Computation"
+          />
+          <FormControlLabel
+            value="simulation-pred"
+            control={<Radio />}
+            label="Simulation/Prediction"
+          />
+        </RadioGroup>
+      </FormControl>
+    </Grid2>
+  );
 }
 
-function StepTwo() {
-  return <div>Step 2</div>;
+function StepTwo({ handleFinish }: { handleFinish: () => void }) {
+  return (
+    <Grid2>
+      <Typography>Predicting results...</Typography>
+      <CircularWithValueLabel onFinish={handleFinish} />
+    </Grid2>
+  );
 }
 
 function StepThree() {
@@ -43,13 +86,18 @@ function StepFour() {
   return <div>Step 4</div>;
 }
 
-function ContentHandler({ step }: { step: number }) {
+interface IContentHandlerProps {
+  step: number;
+  triggerNextStep: () => void;
+}
+
+function ContentHandler({ step, triggerNextStep }: IContentHandlerProps) {
   switch (step) {
     default:
     case 0:
       return <StepOne />;
     case 1:
-      return <StepTwo />;
+      return <StepTwo handleFinish={triggerNextStep} />;
     case 2:
       return <StepThree />;
     case 3:
@@ -65,7 +113,9 @@ export default function VerticalLinearStepper() {
   };
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep(
+      prevActiveStep => prevActiveStep - (prevActiveStep === 2 ? 2 : 1)
+    );
   };
 
   const handleReset = () => {
@@ -87,7 +137,7 @@ export default function VerticalLinearStepper() {
               {step.label}
             </StepLabel>
             <StepContent>
-              <ContentHandler step={activeStep} />
+              <ContentHandler step={activeStep} triggerNextStep={handleNext} />
               {step.hasButtons !== false && (
                 <Box sx={{ mb: 2 }}>
                   <Button
