@@ -16,6 +16,7 @@ import {
   Radio,
   RadioGroup
 } from '@mui/material';
+import CollapsibleTable from './table/CollapsibleTable';
 
 type Content = { label: string; hasButtons?: boolean };
 interface ILoadProps {
@@ -32,7 +33,7 @@ const steps: Array<Content> = [
     hasButtons: false
   },
   {
-    label: 'Visualisation'
+    label: 'Visualisation options'
   },
   {
     label: 'Deployment',
@@ -83,11 +84,15 @@ function StepTwo({ handleFinish, label }: ILoadProps) {
 }
 
 function StepThree() {
-  return <div>Step 3</div>;
+  return <div />;
 }
 
 function StepFour({ handleFinish, label }: ILoadProps) {
-  return <div>Step 4</div>;
+  return (
+    <Grid2>
+      <Button onClick={handleFinish} title="Reset" />
+    </Grid2>
+  );
 }
 
 interface IContentHandlerProps {
@@ -122,7 +127,7 @@ function ContentHandler({
 }
 
 export default function VerticalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(2);
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -138,12 +143,8 @@ export default function VerticalLinearStepper() {
     setActiveStep(0);
   };
 
-  const handleLastStep = () => {
-    window.alert('Finished!');
-  };
-
   return (
-    <Box sx={{ maxWidth: 400 }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((step, index) => (
           <Step key={step.label}>
@@ -160,7 +161,7 @@ export default function VerticalLinearStepper() {
               <ContentHandler
                 step={activeStep}
                 triggerNextStep={handleNext}
-                handleLastStep={handleLastStep}
+                handleLastStep={handleReset}
               />
               {step.hasButtons !== false && (
                 <Box sx={{ mb: 2 }}>
@@ -184,12 +185,9 @@ export default function VerticalLinearStepper() {
           </Step>
         ))}
       </Stepper>
-      {activeStep === steps.length && (
-        <Paper square elevation={0} sx={{ p: 3 }}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-            Reset
-          </Button>
+      {activeStep === 2 && (
+        <Paper square elevation={0} sx={{ p: 3, width: '100%' }}>
+          <CollapsibleTable />
         </Paper>
       )}
     </Box>
