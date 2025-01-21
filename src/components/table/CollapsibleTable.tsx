@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { makeStyles } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -15,63 +14,57 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-// const useRowStyles = makeStyles({
-//   root: {
-//     '& > *': {
-//       borderBottom: 'unset'
-//     }
-//   }
-// });
-
 interface IData {
-  name: string;
-  calories: number;
-  fat: number;
-  carbs: number;
-  protein: number;
-  price: number;
-  history: Array<IHistoryRow>;
-}
-
-interface IHistoryRow {
-  date: string;
-  customerId: string;
-  amount: number;
-}
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-  price: number
-) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      { date: '2020-01-05', customerId: '11091700', amount: 3 },
-      { date: '2020-01-02', customerId: 'Anonymous', amount: 1 }
-    ]
+  sci: number;
+  time: number;
+  availability: string;
+  details: {
+    cpu: {
+      usage: number;
+      time: number;
+      frequency: number;
+    };
+    memory: {
+      energy: number;
+      used: number;
+    };
+    network: {
+      io: number;
+      connections: number;
+    };
   };
 }
 
-interface IRow {
-  row: IData;
+function createData(sci: number, time: number, availability: string) {
+  const row: IData = {
+    sci,
+    time,
+    availability,
+    details: {
+      cpu: {
+        usage: Number((Math.random() * 100).toFixed(2)),
+        time: Math.floor(Math.random() * 10000),
+        frequency: Number((Math.random() * 3 + 2).toFixed(2))
+      },
+      memory: {
+        energy: Number((Math.random() * 1000).toFixed(2)),
+        used: Math.floor(Math.random() * 1000000)
+      },
+      network: {
+        io: Number((Math.random() * 100).toFixed(2)),
+        connections: Math.floor(Math.random() * 50)
+      }
+    }
+  };
+  return row;
 }
 
-function Row(props: IRow) {
-  const { row } = props;
+function Row({ row }: { row: IData }) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <React.Fragment>
-      <TableRow sx={{ height: 30 }}>
+      <TableRow>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -81,45 +74,33 @@ function Row(props: IRow) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell>{row.sci}</TableCell>
+        <TableCell align="right">{row.time}</TableCell>
+        <TableCell align="center">{row.availability}</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
-                History
+                Details
               </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow: IHistoryRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <Typography variant="subtitle1">CPU</Typography>
+              <ul>
+                <li>Usage: {row.details.cpu.usage} %</li>
+                <li>Time: {row.details.cpu.time} μs</li>
+                <li>Frequency: {row.details.cpu.frequency} GHz</li>
+              </ul>
+              <Typography variant="subtitle1">Memory</Typography>
+              <ul>
+                <li>Energy: {row.details.memory.energy} μJ</li>
+                <li>Used: {row.details.memory.used} Bytes</li>
+              </ul>
+              <Typography variant="subtitle1">Network</Typography>
+              <ul>
+                <li>IO: {row.details.network.io} B/s</li>
+                <li>Connections: {row.details.network.connections}</li>
+              </ul>
             </Box>
           </Collapse>
         </TableCell>
@@ -130,47 +111,48 @@ function Row(props: IRow) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired
+    sci: PropTypes.number.isRequired,
+    time: PropTypes.number.isRequired,
+    availability: PropTypes.string.isRequired,
+    details: PropTypes.shape({
+      cpu: PropTypes.shape({
+        usage: PropTypes.string.isRequired,
+        time: PropTypes.number.isRequired,
+        frequency: PropTypes.string.isRequired
+      }).isRequired,
+      memory: PropTypes.shape({
+        energy: PropTypes.string.isRequired,
+        used: PropTypes.number.isRequired
+      }).isRequired,
+      network: PropTypes.shape({
+        io: PropTypes.string.isRequired,
+        connections: PropTypes.number.isRequired
+      }).isRequired
+    }).isRequired
   }).isRequired
 };
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5)
+const rows: Array<IData> = [
+  createData(12.33, 4500, '++'),
+  createData(14.12, 5200, '+'),
+  createData(10.89, 4300, '+++')
 ];
 
 export default function CollapsibleTable() {
   return (
-    <TableContainer sx={{ maxHeight: 300 }} component={Paper}>
-      <Table stickyHeader aria-label="collapsible table">
+    <TableContainer component={Paper}>
+      <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>SCI</TableCell>
+            <TableCell align="right">Est. Time (s)</TableCell>
+            <TableCell align="center">Availability</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <Row key={row.name} row={row} />
+          {rows.map((row, index) => (
+            <Row key={index} row={row} />
           ))}
         </TableBody>
       </Table>
