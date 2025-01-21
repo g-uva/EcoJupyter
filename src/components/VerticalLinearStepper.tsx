@@ -18,6 +18,10 @@ import {
 } from '@mui/material';
 
 type Content = { label: string; hasButtons?: boolean };
+interface ILoadProps {
+  handleFinish: () => void;
+  label: string;
+}
 
 const steps: Array<Content> = [
   {
@@ -69,10 +73,10 @@ function StepOne() {
   );
 }
 
-function StepTwo({ handleFinish }: { handleFinish: () => void }) {
+function StepTwo({ handleFinish, label }: ILoadProps) {
   return (
     <Grid2>
-      <Typography>Predicting results...</Typography>
+      <Typography>{label}</Typography>
       <CircularWithValueLabel onFinish={handleFinish} />
     </Grid2>
   );
@@ -82,26 +86,38 @@ function StepThree() {
   return <div>Step 3</div>;
 }
 
-function StepFour() {
+function StepFour({ handleFinish, label }: ILoadProps) {
   return <div>Step 4</div>;
 }
 
 interface IContentHandlerProps {
   step: number;
   triggerNextStep: () => void;
+  handleLastStep: () => void;
 }
 
-function ContentHandler({ step, triggerNextStep }: IContentHandlerProps) {
+function ContentHandler({
+  step,
+  triggerNextStep,
+  handleLastStep
+}: IContentHandlerProps) {
   switch (step) {
     default:
     case 0:
       return <StepOne />;
     case 1:
-      return <StepTwo handleFinish={triggerNextStep} />;
+      return (
+        <StepTwo handleFinish={triggerNextStep} label="Predicting results..." />
+      );
     case 2:
       return <StepThree />;
     case 3:
-      return <StepFour />;
+      return (
+        <StepFour
+          handleFinish={handleLastStep}
+          label="Deploying application..."
+        />
+      );
   }
 }
 
@@ -122,6 +138,10 @@ export default function VerticalLinearStepper() {
     setActiveStep(0);
   };
 
+  const handleLastStep = () => {
+    window.alert('Finished!');
+  };
+
   return (
     <Box sx={{ maxWidth: 400 }}>
       <Stepper activeStep={activeStep} orientation="vertical">
@@ -137,7 +157,11 @@ export default function VerticalLinearStepper() {
               {step.label}
             </StepLabel>
             <StepContent>
-              <ContentHandler step={activeStep} triggerNextStep={handleNext} />
+              <ContentHandler
+                step={activeStep}
+                triggerNextStep={handleNext}
+                handleLastStep={handleLastStep}
+              />
               {step.hasButtons !== false && (
                 <Box sx={{ mb: 2 }}>
                   <Button
