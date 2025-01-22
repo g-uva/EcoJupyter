@@ -63,11 +63,13 @@ function createData(sci: number, time: number, availability: string) {
 function Row({
   row,
   checkedIndex,
-  setSelectedIndex
+  setSelectedIndex,
+  rowIndex
 }: {
   row: IData;
   checkedIndex: boolean;
   setSelectedIndex: () => void;
+  rowIndex: number;
 }) {
   const [open, setOpen] = React.useState<boolean>(false);
 
@@ -75,14 +77,17 @@ function Row({
     <React.Fragment>
       <TableRow>
         <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-          <Checkbox checked={checkedIndex} onClick={setSelectedIndex} />
+          <Grid2 sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography>{rowIndex}</Typography>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+            <Checkbox checked={checkedIndex} onClick={setSelectedIndex} />
+          </Grid2>
         </TableCell>
         <TableCell>{row.sci}</TableCell>
         <TableCell align="right">{row.time}</TableCell>
@@ -182,6 +187,7 @@ export default function CollapsibleTable() {
             <Row
               key={index}
               row={row}
+              rowIndex={index}
               checkedIndex={index === checkedIndex}
               setSelectedIndex={() => {
                 const newValue = index === checkedIndex ? null : index;
