@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -11,14 +11,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
+import { Checkbox, Grid2 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Checkbox, Grid2 } from '@mui/material';
 
-interface IData {
-  sci: number;
-  time: number;
-  availability: string;
+interface IDataCentre {
+  label: string;
   details: {
     cpu: {
       usage: number;
@@ -36,11 +34,16 @@ interface IData {
   };
 }
 
+interface IData {
+  sci: number;
+  time: number;
+  availability: string;
+  datacentres: IDataCentre[];
+}
+
 function createData(sci: number, time: number, availability: string) {
-  const row: IData = {
-    sci,
-    time,
-    availability,
+  const datacentres: IDataCentre[] = Array.from({ length: 2 }, (_, index) => ({
+    label: `Data Centre ${index + 1}`,
     details: {
       cpu: {
         usage: Number((Math.random() * 100).toFixed(2)),
@@ -56,8 +59,9 @@ function createData(sci: number, time: number, availability: string) {
         connections: Math.floor(Math.random() * 50)
       }
     }
-  };
-  return row;
+  }));
+
+  return { sci, time, availability, datacentres };
 }
 
 function Row({
@@ -74,7 +78,7 @@ function Row({
   const [open, setOpen] = React.useState<boolean>(false);
 
   return (
-    <React.Fragment>
+    <>
       <TableRow>
         <TableCell>
           <Grid2 sx={{ display: 'flex', alignItems: 'center' }}>
@@ -96,77 +100,93 @@ function Row({
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ m: 1, display: 'flex', flexGrow: 1 }}>
-              <Grid2
-                sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
-              >
-                <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
-                  CPU
-                </Typography>
-                <ul style={{ paddingInlineStart: '10px' }}>
-                  <li>Usage: {row.details.cpu.usage} %</li>
-                  <li>Time: {row.details.cpu.time} μs</li>
-                  <li>Frequency: {row.details.cpu.frequency} GHz</li>
-                </ul>
-              </Grid2>
-              <Grid2
-                sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
-              >
-                <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
-                  Memory
-                </Typography>
-                <ul style={{ paddingInlineStart: '10px' }}>
-                  <li>Energy: {row.details.memory.energy} μJ</li>
-                  <li>Used: {row.details.memory.used} Bytes</li>
-                </ul>
-              </Grid2>
-              <Grid2
-                sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
-              >
-                <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
-                  Network
-                </Typography>
-                <ul style={{ paddingInlineStart: '10px' }}>
-                  <li>IO: {row.details.network.io} B/s</li>
-                  <li>Connections: {row.details.network.connections}</li>
-                </ul>
-              </Grid2>
+            <Box sx={{ m: 1 }}>
+              {row.datacentres.map((datacentre, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    mb: 2,
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    p: 2
+                  }}
+                >
+                  <Typography
+                    sx={{ fontWeight: 'bold', mb: 1 }}
+                    variant="subtitle1"
+                  >
+                    {datacentre.label}
+                  </Typography>
+                  <Grid2
+                    container
+                    spacing={2}
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <Grid2
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: 'bold' }}>CPU</Typography>
+                      <ul style={{ paddingInlineStart: '10px' }}>
+                        <li>Usage: {datacentre.details.cpu.usage} %</li>
+                        <li>Time: {datacentre.details.cpu.time} μs</li>
+                        <li>
+                          Frequency: {datacentre.details.cpu.frequency} GHz
+                        </li>
+                      </ul>
+                    </Grid2>
+                    <Grid2
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: 'bold' }}>
+                        Memory
+                      </Typography>
+                      <ul style={{ paddingInlineStart: '10px' }}>
+                        <li>Energy: {datacentre.details.memory.energy} μJ</li>
+                        <li>Used: {datacentre.details.memory.used} Bytes</li>
+                      </ul>
+                    </Grid2>
+                    <Grid2
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: 'bold' }}>
+                        Network
+                      </Typography>
+                      <ul style={{ paddingInlineStart: '10px' }}>
+                        <li>IO: {datacentre.details.network.io} B/s</li>
+                        <li>
+                          Connections: {datacentre.details.network.connections}
+                        </li>
+                      </ul>
+                    </Grid2>
+                  </Grid2>
+                </Box>
+              ))}
             </Box>
           </Collapse>
         </TableCell>
       </TableRow>
-    </React.Fragment>
+    </>
   );
 }
-
-Row.propTypes = {
-  row: PropTypes.shape({
-    sci: PropTypes.number.isRequired,
-    time: PropTypes.number.isRequired,
-    availability: PropTypes.string.isRequired,
-    details: PropTypes.shape({
-      cpu: PropTypes.shape({
-        usage: PropTypes.string.isRequired,
-        time: PropTypes.number.isRequired,
-        frequency: PropTypes.string.isRequired
-      }).isRequired,
-      memory: PropTypes.shape({
-        energy: PropTypes.string.isRequired,
-        used: PropTypes.number.isRequired
-      }).isRequired,
-      network: PropTypes.shape({
-        io: PropTypes.string.isRequired,
-        connections: PropTypes.number.isRequired
-      }).isRequired
-    }).isRequired
-  }).isRequired
-};
 
 const rows: Array<IData> = [
   createData(12.33, 4500, '++'),
   createData(14.12, 5200, '+'),
   createData(10.89, 4300, '+++')
 ];
+
 interface ICollapsibleTableProps {
   checkedIndex: number | null;
   setCheckedIndex: (newValue: number | null) => void;
@@ -176,8 +196,6 @@ export default function CollapsibleTable({
   checkedIndex,
   setCheckedIndex
 }: ICollapsibleTableProps) {
-  // const [checkedIndex, setCheckedIndex] = React.useState<number | null>(null);
-
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
