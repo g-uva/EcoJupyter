@@ -10,12 +10,24 @@ const fetchSimulatedData = async () => {
         {
           name: 'EGI Data Centre 1',
           location: 'Amsterdam, Netherlands',
-          coordinates: { lat: 52.3676, lng: 4.9041 }
+          coordinates: { lat: 52.3676, lng: 4.9041 },
+          details: {
+            cpu: { usage: '20.00', time: 1200, frequency: '3.00' },
+            memory: { energy: '500.00', used: 512000 },
+            network: { io: '25.00', connections: 5 }
+          },
+          workload_percent: 60
         },
         {
           name: 'EGI Data Centre 2',
           location: 'Frankfurt, Germany',
-          coordinates: { lat: 50.1109, lng: 8.6821 }
+          coordinates: { lat: 50.1109, lng: 8.6821 },
+          details: {
+            cpu: { usage: '14.12', time: 1500, frequency: '3.21' },
+            memory: { energy: '376.45', used: 824512 },
+            network: { io: '20.00', connections: 4 }
+          },
+          workload_percent: 40
         }
       ],
       details: {
@@ -43,7 +55,13 @@ const fetchSimulatedData = async () => {
         {
           name: 'EGI Data Centre 3',
           location: 'Paris, France',
-          coordinates: { lat: 48.8566, lng: 2.3522 }
+          coordinates: { lat: 48.8566, lng: 2.3522 },
+          details: {
+            cpu: { usage: '22.00', time: 2000, frequency: '2.90' },
+            memory: { energy: '400.00', used: 614400 },
+            network: { io: '30.00', connections: 8 }
+          },
+          workload_percent: 100
         }
       ],
       details: {
@@ -71,12 +89,24 @@ const fetchSimulatedData = async () => {
         {
           name: 'EGI Data Centre 4',
           location: 'Rome, Italy',
-          coordinates: { lat: 41.9028, lng: 12.4964 }
+          coordinates: { lat: 41.9028, lng: 12.4964 },
+          details: {
+            cpu: { usage: '23.50', time: 3000, frequency: '3.10' },
+            memory: { energy: '600.00', used: 1024000 },
+            network: { io: '35.00', connections: 7 }
+          },
+          workload_percent: 50
         },
         {
           name: 'EGI Data Centre 5',
           location: 'Madrid, Spain',
-          coordinates: { lat: 40.4168, lng: -3.7038 }
+          coordinates: { lat: 40.4168, lng: -3.7038 },
+          details: {
+            cpu: { usage: '21.82', time: 2500, frequency: '3.05' },
+            memory: { energy: '580.00', used: 974500 },
+            network: { io: '43.00', connections: 6 }
+          },
+          workload_percent: 50
         }
       ],
       details: {
@@ -102,7 +132,6 @@ const fetchSimulatedData = async () => {
 const fetchData = async () => {
   const data = await fetchSimulatedData();
   console.log('Fetched data:', data);
-  return data;
 };
 
 fetchData();

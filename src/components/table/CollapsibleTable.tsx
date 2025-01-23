@@ -167,9 +167,16 @@ const rows: Array<IData> = [
   createData(14.12, 5200, '+'),
   createData(10.89, 4300, '+++')
 ];
+interface ICollapsibleTableProps {
+  checkedIndex: number | null;
+  setCheckedIndex: (newValue: number | null) => void;
+}
 
-export default function CollapsibleTable() {
-  const [checkedIndex, setCheckedIndex] = React.useState<number | null>(null);
+export default function CollapsibleTable({
+  checkedIndex,
+  setCheckedIndex
+}: ICollapsibleTableProps) {
+  // const [checkedIndex, setCheckedIndex] = React.useState<number | null>(null);
 
   return (
     <TableContainer component={Paper}>

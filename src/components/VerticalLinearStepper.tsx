@@ -11,7 +11,6 @@ import CircularWithValueLabel from './progress/CircularWithValueLabel';
 import {
   FormControl,
   FormControlLabel,
-  // FormLabel,
   Grid2,
   Radio,
   RadioGroup
@@ -130,6 +129,9 @@ function ContentHandler({
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [complete, setComplete] = React.useState(false);
+  const [checkedIndex, setCheckedIndex] = React.useState<number | null>(null);
+
+  const disableNextStepThree = activeStep === 2 && checkedIndex === null;
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -173,6 +175,7 @@ export default function VerticalLinearStepper() {
                       variant="contained"
                       onClick={handleNext}
                       sx={{ mt: 1, mr: 1 }}
+                      disabled={disableNextStepThree}
                     >
                       {index === steps.length - 1 ? 'Finish' : 'Continue'}
                     </Button>
@@ -196,7 +199,10 @@ export default function VerticalLinearStepper() {
           elevation={0}
           sx={{ p: 3, width: '100%', overflow: 'visible' }}
         >
-          <CollapsibleTable />
+          <CollapsibleTable
+            checkedIndex={checkedIndex}
+            setCheckedIndex={setCheckedIndex}
+          />
         </Paper>
       )}
       {activeStep === 3 && (
