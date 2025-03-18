@@ -1,11 +1,14 @@
 import React from 'react';
 import { ReactWidget } from '@jupyterlab/apputils';
-import { Grid2, Paper } from '@mui/material';
+import { 
+  // Grid2, 
+  Paper 
+} from '@mui/material';
 
 // import BandHighLight from './components/BandHighLight';
 // import ElementHighlights from './components/ElementHighlights';
 // import MapComponent from './components/map/MapComponent';
-import VerticalLinearStepper from './components/VerticalLinearStepper';
+// import VerticalLinearStepper from './components/VerticalLinearStepper';
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
@@ -26,13 +29,13 @@ const styles: Record<string, React.CSSProperties> = {
   }
 };
 
-function GridContent() {
-  return (
-    <Grid2 sx={{ width: '100%', px: 3, py: 5 }}>
-      <VerticalLinearStepper />
-    </Grid2>
-  );
-}
+// function GridContent() {
+//   return (
+//     <Grid2 sx={{ width: '100%', px: 3, py: 5 }}>
+//       <VerticalLinearStepper />
+//     </Grid2>
+//   );
+// }
 
 /**
  * React component for a counter.
@@ -43,7 +46,14 @@ const App = (): JSX.Element => {
   return (
     <div style={styles.main}>
       <Paper style={styles.grid}>
-        <GridContent />
+        {/* <GridContent /> */}
+        <iframe
+          src="http://localhost:3000/d-solo/ceetwcgabhgcgb/ping-go-server?orgId=1&from=1741098858351&to=1741100658351&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+          width="450"
+          height="200"
+          frameBorder="0"
+          sandbox="allow-scripts allow-same-origin"
+        ></iframe>
       </Paper>
     </div>
   );
