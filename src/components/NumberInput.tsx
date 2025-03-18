@@ -1,13 +1,14 @@
 import { TextField } from '@mui/material';
 import React from 'react';
+import { DEFAULT_REFRESH_RATE } from '../widget';
 
 interface INumberInput {
-  currentRefreshValue: number;
+  // currentRefreshValue: number;
   handleRefreshNumberChange: (newValue: string) => void;
 }
 
 export default function NumberInput({
-  currentRefreshValue,
+  // currentRefreshValue,
   handleRefreshNumberChange
 }: INumberInput) {
   return (
@@ -21,7 +22,8 @@ export default function NumberInput({
         }
       }}
       onChange={event => handleRefreshNumberChange(event.target.value)}
-      value={currentRefreshValue}
+      // value={currentRefreshValue}
+      defaultValue={DEFAULT_REFRESH_RATE}
       size="small"
       sx={{ maxWidth: 90 }}
     />

@@ -36,7 +36,7 @@ const styles: Record<string, React.CSSProperties> = {
 //   );
 // }
 
-const DEFAULT_REFRESH_RATE = 2;
+export const DEFAULT_REFRESH_RATE = 2;
 
 function debounce<T extends (...args: any[]) => void>(
   func: T,
@@ -65,9 +65,10 @@ const App = (): JSX.Element => {
   );
 
   React.useEffect(() => {
-    setIframeSrc(
-      prevState => prevState.split('&refresh=')[0] + `${refreshRateS}s`
-    );
+    setIframeSrc(prevState => {
+      const base = prevState.split('&refresh=')[0];
+      return `${base}&refresh=${refreshRateS}s`;
+    });
   }, [refreshRateS]);
 
   function handleRefreshClick() {
@@ -78,21 +79,30 @@ const App = (): JSX.Element => {
     }
   }
 
+  // function handleNumberChange(value: string) {
+  //   debounce(() => setRefreshRateS(Number(value)), 200);
+  // }
+
+  // Create a debounced version of setRefreshRateS
+  // Using 200ms delay instead of 2ms for a noticeable debounce effect.
+  const debouncedSetRefreshRateS = React.useMemo(
+    () => debounce((value: number) => setRefreshRateS(value), 1000),
+    []
+  );
+
+  // Call the debounced function on number change
   function handleNumberChange(value: string) {
-    debounce(() => setRefreshRateS(Number(value)), 2);
+    const parsedValue = Number(value);
+    if (!isNaN(parsedValue)) {
+      debouncedSetRefreshRateS(parsedValue);
+    }
   }
 
   return (
     <div style={styles.main}>
       <Paper style={styles.grid}>
         {/* <GridContent /> */}
-        <Grid2>
-          <RefreshButton handleRefreshClick={handleRefreshClick} />
-          <NumberInput
-            currentRefreshValue={refreshRateS}
-            handleRefreshNumberChange={newValue => handleNumberChange(newValue)}
-          />
-        </Grid2>
+
         <iframe
           src={iframeSrc}
           width="450"
@@ -101,6 +111,13 @@ const App = (): JSX.Element => {
           sandbox="allow-scripts allow-same-origin"
           ref={iframeRef}
         ></iframe>
+        <Grid2>
+          <RefreshButton handleRefreshClick={handleRefreshClick} />
+          <NumberInput
+            // currentRefreshValue={refreshRateS}
+            handleRefreshNumberChange={newValue => handleNumberChange(newValue)}
+          />
+        </Grid2>
       </Paper>
     </div>
   );
