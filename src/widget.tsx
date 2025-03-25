@@ -1,8 +1,9 @@
 import React from 'react';
 import { ReactWidget } from '@jupyterlab/apputils';
-import { Grid2, Paper } from '@mui/material';
-import RefreshButton from './components/RefreshButton';
-import NumberInput from './components/NumberInput';
+import { Paper } from '@mui/material';
+import AddButton from './components/AddButton';
+import ChartWrapper from './components/ChartWrapper';
+import CreateChartDialog from './CreateChartDialog';
 
 // import BandHighLight from './components/BandHighLight';
 // import ElementHighlights from './components/ElementHighlights';
@@ -21,7 +22,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
   grid: {
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    whiteSpace: 'wrap',
+    // justifyContent: 'center',
     // alignItems: 'center',
     flex: '0 1 100%',
     width: '100%'
@@ -36,18 +39,16 @@ const styles: Record<string, React.CSSProperties> = {
 //   );
 // }
 
+const CONFIG_BASE_URL = 'http://localhost:3000/';
 export const DEFAULT_REFRESH_RATE = 2;
 
-function debounce<T extends (...args: any[]) => void>(
-  func: T,
-  delay: number
-): (...args: Parameters<T>) => void {
-  let timer: ReturnType<typeof setTimeout>;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => func(...args), delay);
-  };
+interface ICreateIFrame {
+  src: string;
+  height: number;
+  width: number;
 }
+
+const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/ceetwcgabhgcgb/ping-go-server?orgId=1&from=1741098858351&to=1741100658351&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
 
 /**
  * React component for a counter.
@@ -55,70 +56,47 @@ function debounce<T extends (...args: any[]) => void>(
  * @returns The React component
  */
 const App = (): JSX.Element => {
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const [iframeList, setIFrameList] = React.useState<
+    React.JSX.Element[] | null
+  >(null);
+  const [createChartOpen, setCreateChartOpen] = React.useState<boolean>(false);
 
-  const [refreshRateS, setRefreshRateS] =
-    React.useState<number>(DEFAULT_REFRESH_RATE);
+  function createIFrame({ src, height, width }: ICreateIFrame) {
+    return <ChartWrapper src={src} width={width} height={height} />;
+  }
 
-  const [iframeSrc, setIframeSrc] = React.useState<string>(
-    `http://localhost:3000/d-solo/ceetwcgabhgcgb/ping-go-server?orgId=1&from=1741098858351&to=1741100658351&timezone=browser&panelId=1&__feature.dashboardSceneSolo&refresh=${refreshRateS}s`
-  );
-
-  React.useEffect(() => {
-    setIframeSrc(prevState => {
-      const base = prevState.split('&refresh=')[0];
-      return `${base}&refresh=${refreshRateS}s`;
+  function handleCreateChart() {
+    const iframe = createIFrame({
+      src: DEFAULT_SRC_IFRAME,
+      height: 200,
+      width: 400
     });
-  }, [refreshRateS]);
 
-  function handleRefreshClick() {
-    // alert('Refreshing...');
-    if (iframeRef.current) {
-      const copy_src = structuredClone(iframeRef.current.src);
-      iframeRef.current.src = copy_src;
+    if (iframeList) {
+      setIFrameList([...iframeList, iframe]);
+    } else {
+      setIFrameList([iframe]);
     }
   }
 
-  // function handleNumberChange(value: string) {
-  //   debounce(() => setRefreshRateS(Number(value)), 200);
-  // }
-
-  // Create a debounced version of setRefreshRateS
-  // Using 200ms delay instead of 2ms for a noticeable debounce effect.
-  const debouncedSetRefreshRateS = React.useMemo(
-    () => debounce((value: number) => setRefreshRateS(value), 1000),
-    []
-  );
-
-  // Call the debounced function on number change
-  function handleNumberChange(value: string) {
-    const parsedValue = Number(value);
-    if (!isNaN(parsedValue)) {
-      debouncedSetRefreshRateS(parsedValue);
-    }
+  function handleCreateChartDialogClose() {
+    setCreateChartOpen(false);
+    handleCreateChart();
   }
+
+  // function handleRemoveChart()
 
   return (
     <div style={styles.main}>
       <Paper style={styles.grid}>
-        {/* <GridContent /> */}
+        <AddButton handleClickButton={handleCreateChart} />
 
-        <iframe
-          src={iframeSrc}
-          width="450"
-          height="200"
-          frameBorder="0"
-          sandbox="allow-scripts allow-same-origin"
-          ref={iframeRef}
-        ></iframe>
-        <Grid2>
-          <RefreshButton handleRefreshClick={handleRefreshClick} />
-          <NumberInput
-            // currentRefreshValue={refreshRateS}
-            handleRefreshNumberChange={newValue => handleNumberChange(newValue)}
-          />
-        </Grid2>
+        {iframeList ? iframeList : null}
       </Paper>
+      <CreateChartDialog
+        open={createChartOpen}
+        handleClose={handleCreateChartDialogClose}
+      />
     </div>
   );
 };
