@@ -60,6 +60,7 @@ const App = (): JSX.Element => {
     React.JSX.Element[] | null
   >(null);
   const [createChartOpen, setCreateChartOpen] = React.useState<boolean>(false);
+  const [tempUrl, setTempUrl] = React.useState<string | null>(null);
 
   function createIFrame({ src, height, width }: ICreateIFrame) {
     return <ChartWrapper src={src} width={width} height={height} />;
@@ -67,7 +68,7 @@ const App = (): JSX.Element => {
 
   function handleCreateChart() {
     const iframe = createIFrame({
-      src: DEFAULT_SRC_IFRAME,
+      src: tempUrl ?? DEFAULT_SRC_IFRAME,
       height: 200,
       width: 400
     });
@@ -77,6 +78,11 @@ const App = (): JSX.Element => {
     } else {
       setIFrameList([iframe]);
     }
+    setTempUrl(null);
+  }
+
+  function handleOpenCreateChartDialog() {
+    setCreateChartOpen(true);
   }
 
   function handleCreateChartDialogClose() {
@@ -89,13 +95,16 @@ const App = (): JSX.Element => {
   return (
     <div style={styles.main}>
       <Paper style={styles.grid}>
-        <AddButton handleClickButton={handleCreateChart} />
+        <AddButton handleClickButton={handleOpenCreateChartDialog} />
 
         {iframeList ? iframeList : null}
       </Paper>
       <CreateChartDialog
         open={createChartOpen}
-        handleClose={handleCreateChartDialogClose}
+        handleClose={(isCancel: boolean) =>
+          !isCancel && handleCreateChartDialogClose()
+        }
+        sendNewUrl={setTempUrl}
       />
     </div>
   );
