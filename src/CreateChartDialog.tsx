@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import SelectComponent from './components/SelectComponent';
 
 interface IFormDialog {
   open: boolean;
@@ -25,7 +26,7 @@ export default function CreateChartDialog({
       <Dialog
         open={open}
         onClose={(_e, reason) => {
-          if (reason === 'backdropClick') {
+          if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
             return;
           } else {
             handleClose(false);
@@ -65,11 +66,20 @@ export default function CreateChartDialog({
             type="url"
             fullWidth
             variant="outlined"
+            size="small"
           />
+          <SelectComponent />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose(true)}>Cancel</Button>
-          <Button type="submit">Create</Button>
+          <Button
+            onClick={() => handleClose(true)}
+            sx={{ textTransform: 'none' }}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" sx={{ textTransform: 'none' }}>
+            Create
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
