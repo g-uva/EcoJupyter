@@ -2,6 +2,7 @@ import { Grid2 } from '@mui/material';
 import React from 'react';
 import NumberInput from './NumberInput';
 import RefreshButton from './RefreshButton';
+import DeleteIconButton from './DeleteIconButton';
 
 export const DEFAULT_REFRESH_RATE = 2;
 
@@ -17,11 +18,19 @@ function debounce<T extends (...args: any[]) => void>(
 }
 
 interface IChartWrapper {
+  keyId: number;
   src: string;
   width?: number;
   height?: number;
+  onDelete: (keyId: number) => void;
 }
-export default function ChartWrapper({ src, width, height }: IChartWrapper) {
+export default function ChartWrapper({
+  keyId,
+  src,
+  width,
+  height,
+  onDelete
+}: IChartWrapper) {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
 
   const [refreshRateS, setRefreshRateS] =
@@ -77,6 +86,7 @@ export default function ChartWrapper({ src, width, height }: IChartWrapper) {
           // currentRefreshValue={refreshRateS}
           handleRefreshNumberChange={newValue => handleNumberChange(newValue)}
         />
+        <DeleteIconButton handleClickButton={() => onDelete(keyId)} />
       </Grid2>
     </>
   );

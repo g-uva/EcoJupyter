@@ -1,6 +1,6 @@
 {
     "name": "egi-jupyterlab-ext",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A JupyterLab extension for EGI and Notebooks.",
     "keywords": [
         "jupyter",
@@ -14,7 +14,7 @@
     "license": "BSD-3-Clause",
     "author": {
         "name": "Gonçalo Ferreira",
-        "email": "gteixei@uva.nl"
+        "email": "g.j.teixeiradepinhoferreira@uva.nl"
     },
     "files": [
         "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",

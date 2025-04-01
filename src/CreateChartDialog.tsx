@@ -8,6 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SelectComponent from './components/SelectComponent';
 
+
 interface IFormDialog {
   open: boolean;
   handleClose: (cancel: boolean) => void;
@@ -42,7 +43,7 @@ export default function CreateChartDialog({
               if (URL_GRAFANA_KEY in formJson) {
                 const url = formJson.url_grafana;
                 sendNewUrl(url);
-                handleClose(false);
+                // handleClose(false);
               } else {
                 throw 'Some error happened with the form.';
               }

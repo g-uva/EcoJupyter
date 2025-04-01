@@ -46,6 +46,7 @@ interface ICreateIFrame {
   src: string;
   height: number;
   width: number;
+  keyId: number;
 }
 
 const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/ceetwcgabhgcgb/ping-go-server?orgId=1&from=1741098858351&to=1741100658351&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
@@ -56,55 +57,66 @@ const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/ceetwcgabhgcgb/ping-go-serv
  * @returns The React component
  */
 const App = (): JSX.Element => {
-  const [iframeList, setIFrameList] = React.useState<
-    React.JSX.Element[] | null
-  >(null);
+  const [iframeList, setIFrameList] = React.useState<Map<
+    number,
+    React.JSX.Element
+  > | null>(null);
   const [createChartOpen, setCreateChartOpen] = React.useState<boolean>(false);
-  const [tempUrl, setTempUrl] = React.useState<string | null>(null);
 
-  function createIFrame({ src, height, width }: ICreateIFrame) {
-    return <ChartWrapper src={src} width={width} height={height} />;
+  function handleDeleteIFrame(keyId: number) {
+    const newMap = new Map(iframeList);
+    newMap?.delete(keyId);
+    setIFrameList(newMap);
   }
 
-  function handleCreateChart() {
+  function createIFrame({ src, height, width, keyId }: ICreateIFrame) {
+    return (
+      <ChartWrapper
+        keyId={keyId}
+        src={src}
+        width={width}
+        height={height}
+        onDelete={handleDeleteIFrame}
+      />
+    );
+  }
+
+  function handleCreateChart(newUrl?: string | null) {
+    const newKeyId = Date.now();
     const iframe = createIFrame({
-      src: tempUrl ?? DEFAULT_SRC_IFRAME,
+      src: newUrl ?? DEFAULT_SRC_IFRAME,
       height: 200,
-      width: 400
+      width: 400,
+      keyId: newKeyId
     });
 
     if (iframeList) {
-      setIFrameList([...iframeList, iframe]);
+      const newMap = new Map(iframeList);
+      newMap.set(newKeyId, iframe);
+      setIFrameList(newMap);
     } else {
-      setIFrameList([iframe]);
+      setIFrameList(new Map([[newKeyId, iframe]]));
     }
-    setTempUrl(null);
+    setCreateChartOpen(false);
   }
 
   function handleOpenCreateChartDialog() {
     setCreateChartOpen(true);
   }
 
-  function handleCreateChartDialogClose() {
-    setCreateChartOpen(false);
-    handleCreateChart();
-  }
-
-  // function handleRemoveChart()
-
   return (
     <div style={styles.main}>
       <Paper style={styles.grid}>
         <AddButton handleClickButton={handleOpenCreateChartDialog} />
 
-        {iframeList ? iframeList : null}
+        {iframeList ? iframeList.values() : null}
       </Paper>
       <CreateChartDialog
         open={createChartOpen}
         handleClose={(isCancel: boolean) =>
-          !isCancel && handleCreateChartDialogClose()
+          !isCancel && setCreateChartOpen(false)
         }
-        sendNewUrl={setTempUrl}
+        sendNewUrl={(url: string | null) => handleCreateChart(url)}
       />
     </div>
   );
