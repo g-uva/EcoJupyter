@@ -6,7 +6,7 @@ import { Grid2 } from '@mui/material';
 import GoBackButton from '../components/GoBackButton';
 
 const CONFIG_BASE_URL = 'http://localhost:3000/';
-const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/fehivnuldmn7kb/new-dashboard?utm_source=grafana_gettingstarted&orgId=1&from=1743424187407&to=1743445787407&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
+const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/behmsglt2r08wa/memory-and-cpu?orgId=1&from=1743616388014&to=1743620582189&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
 
 interface ICreateIFrame {
   src: string;
@@ -52,8 +52,8 @@ export default function ChartsPage({ handleGoBack }: IChartsPage) {
     );
     const iframe = createIFrame({
       src: newUrl ?? DEFAULT_SRC_IFRAME,
-      height: 200,
-      width: 400,
+      height: 400,
+      width: 600,
       keyId: newKeyId
     });
     return [newKeyId, iframe];
@@ -88,7 +88,10 @@ export default function ChartsPage({ handleGoBack }: IChartsPage) {
 
       <AddButton handleClickButton={handleOpenCreateChartDialog} />
 
-      {iframeMap ? iframeMap.values() : null}
+      <Grid2 sx={{ display: 'flex', flexDirection: 'row' }}>
+        {iframeMap ? iframeMap.values() : null}
+      </Grid2>
+
       <CreateChartDialog
         open={createChartOpen}
         handleClose={(isCancel: boolean) =>
