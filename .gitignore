@@ -126,3 +126,5 @@ dmypy.json
 
 .yarnrc.yml
 yarn.lock
+
+.secrets
