@@ -1,8 +1,9 @@
 import React from 'react';
 import AddButton from '../components/AddButton';
-import CreateChartDialog from '../CreateChartDialog';
+import CreateChartDialog from '../dialog/CreateChartDialog';
 import ChartWrapper from '../components/ChartWrapper';
 import { Grid2 } from '@mui/material';
+import GoBackButton from '../components/GoBackButton';
 
 const CONFIG_BASE_URL = 'http://localhost:3000/';
 const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/fehivnuldmn7kb/new-dashboard?utm_source=grafana_gettingstarted&orgId=1&from=1743424187407&to=1743445787407&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
@@ -14,7 +15,11 @@ interface ICreateIFrame {
   keyId: number;
 }
 
-export default function ChartsPage() {
+interface IChartsPage {
+  handleGoBack: () => void;
+}
+
+export default function ChartsPage({ handleGoBack }: IChartsPage) {
   const [iframeMap, setIFrameMap] = React.useState<
     Map<number, React.JSX.Element>
   >(new Map());
@@ -75,12 +80,12 @@ export default function ChartsPage() {
     // setIFrameMap(newMap);
   }
 
-  // React.useMemo(() => {
-  //   console.log(iframeMap);
-  // }, [iframeMap]);
-
   return (
     <Grid2 sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Grid2 sx={{ display: 'flex' }}>
+        <GoBackButton handleClick={handleGoBack} />
+      </Grid2>
+
       <AddButton handleClickButton={handleOpenCreateChartDialog} />
 
       {iframeMap ? iframeMap.values() : null}

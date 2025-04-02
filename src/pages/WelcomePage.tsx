@@ -1,5 +1,11 @@
 import React from 'react';
-import { Button, Grid2, SxProps, Typography } from '@mui/material';
+import {
+  Button, //Divider,
+  Grid2,
+  SxProps,
+  Typography
+} from '@mui/material';
+import GeneralDashboard from './GeneralDashboard';
 
 const styles: Record<string, SxProps> = {
   main: {
@@ -20,7 +26,8 @@ const styles: Record<string, SxProps> = {
     alignContent: 'center',
     '& .MuiButtonBase-root': {
       textTransform: 'none'
-    }
+    },
+    mb: 2
   }
 };
 
@@ -42,6 +49,9 @@ export default function WelcomePage({ handleRealTimeClick }: IWelcomePage) {
           Resource Usage Prediction
         </Button>
       </Grid2>
+
+      {/* <Divider sx={{ width: '100%' }} /> */}
+      <GeneralDashboard />
     </Grid2>
   );
 }

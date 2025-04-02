@@ -4,9 +4,6 @@ import { Grid2, Paper } from '@mui/material';
 import ChartsPage from './pages/ChartsPage';
 import WelcomePage from './pages/WelcomePage';
 
-// import BandHighLight from './components/BandHighLight';
-// import ElementHighlights from './components/ElementHighlights';
-// import MapComponent from './components/map/MapComponent';
 import VerticalLinearStepper from './components/VerticalLinearStepper';
 
 const styles: Record<string, React.CSSProperties> = {
@@ -58,11 +55,15 @@ const App = (): JSX.Element => {
     setActivePageState(Page.ChartsPage);
   }
 
+  function goToMainPage() {
+    setActivePageState(Page.WelcomePage);
+  }
+
   const ActivePage: Record<Page, React.JSX.Element> = {
     [Page.WelcomePage]: (
       <WelcomePage handleRealTimeClick={handleRealTimeClick} />
     ),
-    [Page.ChartsPage]: <ChartsPage />,
+    [Page.ChartsPage]: <ChartsPage handleGoBack={goToMainPage} />,
     [Page.Prediction]: <Prediction />
   };
 

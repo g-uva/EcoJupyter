@@ -6,7 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import SelectComponent from './components/SelectComponent';
+import SelectComponent from '../components/SelectComponent';
+import { METRICS_GRAFANA_KEY, URL_GRAFANA_KEY } from '../helpers/constants';
 
 interface IFormDialog {
   open: boolean;
@@ -14,9 +15,6 @@ interface IFormDialog {
   sendNewMetrics: (metrics: string[]) => void;
   sendNewUrl: (url: string) => void;
 }
-
-const URL_GRAFANA_KEY = 'url_grafana';
-export const METRICS_GRAFANA_KEY = 'metrics_grafana';
 
 const isValidUrl = (urlString: string) => {
   const urlPattern = new RegExp(

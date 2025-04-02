@@ -15,17 +15,32 @@ import { HighlightScope } from '@mui/x-charts/context';
 
 const barChartsParams = {
   series: [
-    { data: [3, 4, 1, 6, 5], label: 'A' },
-    { data: [4, 3, 1, 5, 8], label: 'B' },
-    { data: [4, 2, 5, 4, 1], label: 'C' }
+    { data: [3, 4, 1, 6, 5], label: 'Data centre A' },
+    { data: [4, 3, 1, 5, 8], label: 'Data centre B' },
+    { data: [4, 2, 5, 4, 1], label: 'Data centre C' }
   ],
   height: 400
 };
 const lineChartsParams = {
   series: [
-    { data: [3, 4, 1, 6, 5], label: 'A', area: false, stack: 'total' },
-    { data: [4, 3, 1, 5, 8], label: 'B', area: false, stack: 'total' },
-    { data: [4, 2, 5, 4, 1], label: 'C', area: false, stack: 'total' }
+    {
+      data: [3, 4, 1, 6, 5],
+      label: 'Data centre A',
+      area: false,
+      stack: 'total'
+    },
+    {
+      data: [4, 3, 1, 5, 8],
+      label: 'Data centre B',
+      area: false,
+      stack: 'total'
+    },
+    {
+      data: [4, 2, 5, 4, 1],
+      label: 'Data centre C',
+      area: false,
+      stack: 'total'
+    }
   ],
   xAxis: [{ data: [1, 2, 3, 4, 5], type: 'linear' }],
   height: 400
@@ -111,6 +126,7 @@ export default function ElementHighlights() {
           onChange={handleChartType}
           aria-label="chart type"
           fullWidth
+          size="small"
         >
           {['bar', 'line', 'scatter', 'pie'].map(type => (
             <ToggleButton key={type} value={type} aria-label="left aligned">
@@ -184,6 +200,7 @@ export default function ElementHighlights() {
           value={highlighted}
           onChange={event => setHighlighted(event.target.value)}
           sx={{ minWidth: 150 }}
+          size="small"
         >
           <MenuItem value={'none'}>none</MenuItem>
           <MenuItem value={'item'}>item</MenuItem>
@@ -195,6 +212,7 @@ export default function ElementHighlights() {
           value={faded}
           onChange={event => setFaded(event.target.value)}
           sx={{ minWidth: 150 }}
+          size="small"
         >
           <MenuItem value={'none'}>none</MenuItem>
           <MenuItem value={'series'}>series</MenuItem>
