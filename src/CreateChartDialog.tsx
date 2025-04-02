@@ -18,6 +18,19 @@ interface IFormDialog {
 const URL_GRAFANA_KEY = 'url_grafana';
 export const METRICS_GRAFANA_KEY = 'metrics_grafana';
 
+const isValidUrl = (urlString: string) => {
+  const urlPattern = new RegExp(
+    '^(http?:\\/\\/)?' + // validate protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
+      '(\\#[-a-z\\d_]*)?$',
+    'i'
+  ); // validate fragment locator
+  return !!urlPattern.test(urlString);
+};
+
 export default function CreateChartDialog({
   open,
   handleClose,
@@ -48,7 +61,10 @@ export default function CreateChartDialog({
               }
               if (URL_GRAFANA_KEY in formJson) {
                 const url = formJson.url_grafana;
-                sendNewUrl(url);
+                // Only send the URl if it is valid, since it is optional.
+                if (isValidUrl(url)) {
+                  sendNewUrl(url);
+                }
               } else {
                 throw 'Some error happened with the form.';
               }

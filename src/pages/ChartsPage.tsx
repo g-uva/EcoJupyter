@@ -15,16 +15,16 @@ interface ICreateIFrame {
 }
 
 export default function ChartsPage() {
-  const [iframeList, setIFrameList] = React.useState<Map<
+  const [iframeMap, setIFrameMap] = React.useState<Map<
     number,
     React.JSX.Element
   > | null>(null);
   const [createChartOpen, setCreateChartOpen] = React.useState<boolean>(false);
 
   function handleDeleteIFrame(keyId: number) {
-    const newMap = new Map(iframeList);
+    const newMap = new Map(iframeMap);
     newMap?.delete(keyId);
-    setIFrameList(newMap);
+    setIFrameMap(newMap);
   }
 
   function createIFrame({ src, height, width, keyId }: ICreateIFrame) {
@@ -39,23 +39,17 @@ export default function ChartsPage() {
     );
   }
 
-  function handleCreateChart(newUrl?: string | null) {
-    const newKeyId = Date.now();
+  function createChart(newUrl?: string | null): [number, React.JSX.Element] {
+    const newKeyId = Number(
+      String(Date.now()) + String(Math.round(Math.random() * 10000))
+    );
     const iframe = createIFrame({
       src: newUrl ?? DEFAULT_SRC_IFRAME,
       height: 200,
       width: 400,
       keyId: newKeyId
     });
-
-    if (iframeList) {
-      const newMap = new Map(iframeList);
-      newMap.set(newKeyId, iframe);
-      setIFrameList(newMap);
-    } else {
-      setIFrameList(new Map([[newKeyId, iframe]]));
-    }
-    setCreateChartOpen(false);
+    return [newKeyId, iframe];
   }
 
   function handleOpenCreateChartDialog() {
@@ -63,25 +57,40 @@ export default function ChartsPage() {
   }
 
   function handleNewMetrics(newMetrics: string[]) {
-    console.log('New metrics:', newMetrics);
+    const newMap = new Map<number, React.JSX.Element>(iframeMap);
+
     for (let i = 0; i < newMetrics.length; i++) {
-      console.log('creating chart - ', i);
-      handleCreateChart(DEFAULT_SRC_IFRAME);
+      newMap.set(...createChart(DEFAULT_SRC_IFRAME));
     }
+
+    console.log(newMap);
+
+    setIFrameMap(newMap);
+    setCreateChartOpen(false);
   }
+
+  function handleSubmitUrl(newUrl?: string | null) {
+    const newMap = new Map(iframeMap);
+    newMap.set(...createChart(newUrl));
+    // setIFrameMap(newMap);
+  }
+
+  React.useMemo(() => {
+    console.log(iframeMap);
+  }, [iframeMap]);
 
   return (
     <Grid2 sx={{ display: 'flex', flexDirection: 'column' }}>
       <AddButton handleClickButton={handleOpenCreateChartDialog} />
 
-      {iframeList ? iframeList.values() : null}
+      {iframeMap ? iframeMap.values() : null}
       <CreateChartDialog
         open={createChartOpen}
         handleClose={(isCancel: boolean) =>
           isCancel && setCreateChartOpen(false)
         }
         sendNewMetrics={handleNewMetrics}
-        sendNewUrl={(url: string | null) => handleCreateChart(url)}
+        sendNewUrl={(url: string | null) => handleSubmitUrl(url)}
       />
     </Grid2>
   );
