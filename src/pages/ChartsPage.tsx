@@ -15,16 +15,18 @@ interface ICreateIFrame {
 }
 
 export default function ChartsPage() {
-  const [iframeMap, setIFrameMap] = React.useState<Map<
-    number,
-    React.JSX.Element
-  > | null>(null);
+  const [iframeMap, setIFrameMap] = React.useState<
+    Map<number, React.JSX.Element>
+  >(new Map());
+
   const [createChartOpen, setCreateChartOpen] = React.useState<boolean>(false);
 
   function handleDeleteIFrame(keyId: number) {
-    const newMap = new Map(iframeMap);
-    newMap?.delete(keyId);
-    setIFrameMap(newMap);
+    setIFrameMap(prevMap => {
+      const newMap = new Map(prevMap);
+      newMap?.delete(keyId);
+      return newMap;
+    });
   }
 
   function createIFrame({ src, height, width, keyId }: ICreateIFrame) {
@@ -63,8 +65,6 @@ export default function ChartsPage() {
       newMap.set(...createChart(DEFAULT_SRC_IFRAME));
     }
 
-    console.log(newMap);
-
     setIFrameMap(newMap);
     setCreateChartOpen(false);
   }
@@ -75,9 +75,9 @@ export default function ChartsPage() {
     // setIFrameMap(newMap);
   }
 
-  React.useMemo(() => {
-    console.log(iframeMap);
-  }, [iframeMap]);
+  // React.useMemo(() => {
+  //   console.log(iframeMap);
+  // }, [iframeMap]);
 
   return (
     <Grid2 sx={{ display: 'flex', flexDirection: 'column' }}>

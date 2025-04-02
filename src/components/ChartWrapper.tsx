@@ -40,11 +40,20 @@ export default function ChartWrapper({
     initialSrcWithRefresh
   );
 
-  React.useEffect(() => {
+  function refreshUrl() {
     setIframeSrc(prevState => {
       const base = prevState.split('&refresh=')[0];
       return `${base}&refresh=${refreshRateS}s`;
     });
+  }
+
+  React.useEffect(() => {
+    refreshUrl();
+    const intervalId = setInterval(() => {
+      refreshUrl();
+    }, refreshRateS * 1000);
+    // Whenever the refresh interval is cleared.
+    return () => clearInterval(intervalId);
   }, [refreshRateS]);
 
   function handleRefreshClick() {
@@ -78,6 +87,7 @@ export default function ChartWrapper({
         height={height}
         sandbox="allow-scripts allow-same-origin"
         ref={iframeRef}
+        id={`iframe-item-${keyId}`}
       />
       <Grid2>
         <RefreshButton handleRefreshClick={handleRefreshClick} />
