@@ -3,8 +3,7 @@ import React from 'react';
 import NumberInput from './NumberInput';
 import RefreshButton from './RefreshButton';
 import DeleteIconButton from './DeleteIconButton';
-
-export const DEFAULT_REFRESH_RATE = 2;
+import { DEFAULT_REFRESH_RATE } from '../helpers/constants';
 
 function debounce<T extends (...args: any[]) => void>(
   func: T,

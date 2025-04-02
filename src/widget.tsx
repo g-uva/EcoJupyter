@@ -1,9 +1,8 @@
 import React from 'react';
 import { ReactWidget } from '@jupyterlab/apputils';
 import { Paper } from '@mui/material';
-import AddButton from './components/AddButton';
-import ChartWrapper from './components/ChartWrapper';
-import CreateChartDialog from './CreateChartDialog';
+import ChartsPage from './pages/ChartsPage';
+import WelcomePage from './pages/WelcomePage';
 
 // import BandHighLight from './components/BandHighLight';
 // import ElementHighlights from './components/ElementHighlights';
@@ -39,85 +38,18 @@ const styles: Record<string, React.CSSProperties> = {
 //   );
 // }
 
-const CONFIG_BASE_URL = 'http://localhost:3000/';
-export const DEFAULT_REFRESH_RATE = 2;
-
-interface ICreateIFrame {
-  src: string;
-  height: number;
-  width: number;
-  keyId: number;
-}
-
-const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/ceetwcgabhgcgb/ping-go-server?orgId=1&from=1741098858351&to=1741100658351&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
-
 /**
  * React component for a counter.
  *
  * @returns The React component
  */
 const App = (): JSX.Element => {
-  const [iframeList, setIFrameList] = React.useState<Map<
-    number,
-    React.JSX.Element
-  > | null>(null);
-  const [createChartOpen, setCreateChartOpen] = React.useState<boolean>(false);
-
-  function handleDeleteIFrame(keyId: number) {
-    const newMap = new Map(iframeList);
-    newMap?.delete(keyId);
-    setIFrameList(newMap);
-  }
-
-  function createIFrame({ src, height, width, keyId }: ICreateIFrame) {
-    return (
-      <ChartWrapper
-        keyId={keyId}
-        src={src}
-        width={width}
-        height={height}
-        onDelete={handleDeleteIFrame}
-      />
-    );
-  }
-
-  function handleCreateChart(newUrl?: string | null) {
-    const newKeyId = Date.now();
-    const iframe = createIFrame({
-      src: newUrl ?? DEFAULT_SRC_IFRAME,
-      height: 200,
-      width: 400,
-      keyId: newKeyId
-    });
-
-    if (iframeList) {
-      const newMap = new Map(iframeList);
-      newMap.set(newKeyId, iframe);
-      setIFrameList(newMap);
-    } else {
-      setIFrameList(new Map([[newKeyId, iframe]]));
-    }
-    setCreateChartOpen(false);
-  }
-
-  function handleOpenCreateChartDialog() {
-    setCreateChartOpen(true);
-  }
-
   return (
     <div style={styles.main}>
       <Paper style={styles.grid}>
-        <AddButton handleClickButton={handleOpenCreateChartDialog} />
-
-        {iframeList ? iframeList.values() : null}
+        <WelcomePage />
+        <ChartsPage />
       </Paper>
-      <CreateChartDialog
-        open={createChartOpen}
-        handleClose={(isCancel: boolean) =>
-          !isCancel && setCreateChartOpen(false)
-        }
-        sendNewUrl={(url: string | null) => handleCreateChart(url)}
-      />
     </div>
   );
 };

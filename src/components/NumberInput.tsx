@@ -1,6 +1,6 @@
-import { TextField } from '@mui/material';
 import React from 'react';
-import { DEFAULT_REFRESH_RATE } from '../widget';
+import { TextField } from '@mui/material';
+import { DEFAULT_REFRESH_RATE } from '../helpers/constants';
 
 interface INumberInput {
   // currentRefreshValue: number;
