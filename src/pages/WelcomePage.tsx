@@ -24,14 +24,20 @@ const styles: Record<string, SxProps> = {
   }
 };
 
-export default function WelcomePage() {
+interface IWelcomePage {
+  handleRealTimeClick: () => void;
+}
+
+export default function WelcomePage({ handleRealTimeClick }: IWelcomePage) {
   return (
     <Grid2 sx={styles.main}>
       <Typography variant="h4" sx={styles.title}>
         Welcome to GreenDIGIT Dashboard
       </Typography>
       <Grid2 sx={styles.buttonGrid}>
-        <Button variant="outlined">Real-time Tracking Monitor</Button>
+        <Button variant="outlined" onClick={handleRealTimeClick}>
+          Real-time Tracking Monitor
+        </Button>
         <Button variant="outlined" disabled>
           Resource Usage Prediction
         </Button>

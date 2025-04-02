@@ -2,9 +2,10 @@ import React from 'react';
 import AddButton from '../components/AddButton';
 import CreateChartDialog from '../CreateChartDialog';
 import ChartWrapper from '../components/ChartWrapper';
+import { Grid2 } from '@mui/material';
 
 const CONFIG_BASE_URL = 'http://localhost:3000/';
-const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/ceetwcgabhgcgb/ping-go-server?orgId=1&from=1741098858351&to=1741100658351&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
+const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/fehivnuldmn7kb/new-dashboard?utm_source=grafana_gettingstarted&orgId=1&from=1743424187407&to=1743445787407&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
 
 interface ICreateIFrame {
   src: string;
@@ -61,8 +62,16 @@ export default function ChartsPage() {
     setCreateChartOpen(true);
   }
 
+  function handleNewMetrics(newMetrics: string[]) {
+    console.log('New metrics:', newMetrics);
+    for (let i = 0; i < newMetrics.length; i++) {
+      console.log('creating chart - ', i);
+      handleCreateChart(DEFAULT_SRC_IFRAME);
+    }
+  }
+
   return (
-    <div>
+    <Grid2 sx={{ display: 'flex', flexDirection: 'column' }}>
       <AddButton handleClickButton={handleOpenCreateChartDialog} />
 
       {iframeList ? iframeList.values() : null}
@@ -71,8 +80,9 @@ export default function ChartsPage() {
         handleClose={(isCancel: boolean) =>
           isCancel && setCreateChartOpen(false)
         }
+        sendNewMetrics={handleNewMetrics}
         sendNewUrl={(url: string | null) => handleCreateChart(url)}
       />
-    </div>
+    </Grid2>
   );
 }

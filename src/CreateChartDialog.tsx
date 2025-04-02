@@ -11,14 +11,17 @@ import SelectComponent from './components/SelectComponent';
 interface IFormDialog {
   open: boolean;
   handleClose: (cancel: boolean) => void;
+  sendNewMetrics: (metrics: string[]) => void;
   sendNewUrl: (url: string) => void;
 }
 
 const URL_GRAFANA_KEY = 'url_grafana';
+export const METRICS_GRAFANA_KEY = 'metrics_grafana';
 
 export default function CreateChartDialog({
   open,
   handleClose,
+  sendNewMetrics,
   sendNewUrl
 }: IFormDialog) {
   return (
@@ -39,6 +42,10 @@ export default function CreateChartDialog({
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
               const formJson = Object.fromEntries((formData as any).entries());
+              if (METRICS_GRAFANA_KEY in formJson) {
+                const metrics = formJson.metrics_grafana;
+                sendNewMetrics(metrics.split(','));
+              }
               if (URL_GRAFANA_KEY in formJson) {
                 const url = formJson.url_grafana;
                 sendNewUrl(url);
@@ -49,15 +56,16 @@ export default function CreateChartDialog({
           }
         }}
       >
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Add Metric Chart</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To create a chart, you must provide the URL from the Grafana's
-            dashboard.
+            To create a chart, you must either select a metric from the list,
+            and/or provide the URL from the Grafana's dashboard.
           </DialogContentText>
+          <SelectComponent />
           <TextField
             autoFocus
-            required
+            // required
             margin="dense"
             id="name"
             name={URL_GRAFANA_KEY}
@@ -67,7 +75,6 @@ export default function CreateChartDialog({
             variant="outlined"
             size="small"
           />
-          <SelectComponent />
         </DialogContent>
         <DialogActions>
           <Button

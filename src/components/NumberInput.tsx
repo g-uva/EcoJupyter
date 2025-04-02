@@ -22,7 +22,6 @@ export default function NumberInput({
         }
       }}
       onChange={event => handleRefreshNumberChange(event.target.value)}
-      // value={currentRefreshValue}
       defaultValue={DEFAULT_REFRESH_RATE}
       size="small"
       sx={{ maxWidth: 90 }}

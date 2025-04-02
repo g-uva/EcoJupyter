@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
 interface IAddButton {
@@ -8,8 +8,13 @@ interface IAddButton {
 
 export default function AddButton({ handleClickButton }: IAddButton) {
   return (
-    <IconButton onClick={handleClickButton} size="small">
-      <AddCircleOutlineRoundedIcon />
-    </IconButton>
+    <Button
+      onClick={handleClickButton}
+      size="small"
+      startIcon={<AddCircleOutlineRoundedIcon />}
+      sx={{ textTransform: 'none' }}
+    >
+      Add chart
+    </Button>
   );
 }

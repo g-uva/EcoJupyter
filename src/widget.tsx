@@ -1,13 +1,13 @@
 import React from 'react';
 import { ReactWidget } from '@jupyterlab/apputils';
-import { Paper } from '@mui/material';
+import { Grid2, Paper } from '@mui/material';
 import ChartsPage from './pages/ChartsPage';
 import WelcomePage from './pages/WelcomePage';
 
 // import BandHighLight from './components/BandHighLight';
 // import ElementHighlights from './components/ElementHighlights';
 // import MapComponent from './components/map/MapComponent';
-// import VerticalLinearStepper from './components/VerticalLinearStepper';
+import VerticalLinearStepper from './components/VerticalLinearStepper';
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
@@ -30,13 +30,19 @@ const styles: Record<string, React.CSSProperties> = {
   }
 };
 
-// function GridContent() {
-//   return (
-//     <Grid2 sx={{ width: '100%', px: 3, py: 5 }}>
-//       <VerticalLinearStepper />
-//     </Grid2>
-//   );
-// }
+function Prediction() {
+  return (
+    <Grid2 sx={{ width: '100%', px: 3, py: 5 }}>
+      <VerticalLinearStepper />
+    </Grid2>
+  );
+}
+
+export enum Page {
+  WelcomePage,
+  ChartsPage,
+  Prediction
+}
 
 /**
  * React component for a counter.
@@ -44,12 +50,25 @@ const styles: Record<string, React.CSSProperties> = {
  * @returns The React component
  */
 const App = (): JSX.Element => {
+  const [activePageState, setActivePageState] = React.useState<Page>(
+    Page.WelcomePage
+  );
+
+  function handleRealTimeClick() {
+    setActivePageState(Page.ChartsPage);
+  }
+
+  const ActivePage: Record<Page, React.JSX.Element> = {
+    [Page.WelcomePage]: (
+      <WelcomePage handleRealTimeClick={handleRealTimeClick} />
+    ),
+    [Page.ChartsPage]: <ChartsPage />,
+    [Page.Prediction]: <Prediction />
+  };
+
   return (
     <div style={styles.main}>
-      <Paper style={styles.grid}>
-        <WelcomePage />
-        <ChartsPage />
-      </Paper>
+      <Paper style={styles.grid}>{ActivePage[activePageState]}</Paper>
     </div>
   );
 };
