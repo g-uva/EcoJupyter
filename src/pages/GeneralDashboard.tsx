@@ -1,8 +1,8 @@
 import { Paper } from '@mui/material';
 import React from 'react';
 
-import BandHighLight from '../components/BandHighLight';
-import ElementHighlights from '../components/ElementHighlights';
+// import BandHighLight from '../components/BandHighLight';
+// import ElementHighlights from '../components/ElementHighlights';
 import MapComponent from '../components/map/MapComponent';
 
 const styles: Record<string, React.CSSProperties> = {
@@ -13,7 +13,8 @@ const styles: Record<string, React.CSSProperties> = {
     height: '100%',
     flexWrap: 'wrap',
     boxSizing: 'border-box',
-    padding: '3px'
+    padding: '10px',
+    whiteSpace: 'nowrap'
   },
   grid: {
     display: 'flex',
@@ -26,13 +27,31 @@ const styles: Record<string, React.CSSProperties> = {
   }
 };
 
+interface ITempIframe {
+  keyIndex: number;
+}
+
+function TempIframe({ keyIndex }: ITempIframe) {
+  return (
+    <iframe
+      src="http://localhost:3000/d-solo/behmsglt2r08wa/memory-and-cpu?orgId=1&from=1743658807612&to=1743659109100&timezone=browser&theme=light&panelId=1&__feature.dashboardSceneSolo"
+      width="100%"
+      height="400px"
+      sandbox="allow-scripts allow-same-origin"
+      // ref={iframeRef}
+      id={`iframe-item-${keyIndex}`}
+      style={{ border: 'none', margin: '5px' }}
+    />
+  );
+}
+
 export default function GeneralDashboard() {
   function GridContent({ index }: { index: number }) {
     switch (index) {
       case 1:
-        return <BandHighLight />;
+        return <TempIframe keyIndex={1} />;
       case 2:
-        return <ElementHighlights />;
+        return <TempIframe keyIndex={2} />;
       case 3:
         return <MapComponent />;
       default:

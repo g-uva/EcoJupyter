@@ -15,7 +15,8 @@ const styles: Record<string, React.CSSProperties> = {
     height: '100%',
     flexWrap: 'wrap',
     boxSizing: 'border-box',
-    padding: '3px'
+    padding: '3px',
+    overflow: 'auto'
   },
   grid: {
     display: 'flex',
@@ -71,7 +72,10 @@ const App = (): JSX.Element => {
 
   const ActivePage: Record<Page, React.JSX.Element> = {
     [Page.WelcomePage]: (
-      <WelcomePage handleRealTimeClick={handleRealTimeClick} handlePredictionClick={handlePredictionClick} />
+      <WelcomePage
+        handleRealTimeClick={handleRealTimeClick}
+        handlePredictionClick={handlePredictionClick}
+      />
     ),
     [Page.ChartsPage]: <ChartsPage handleGoBack={goToMainPage} />,
     [Page.Prediction]: <Prediction handleGoBack={goToMainPage} />

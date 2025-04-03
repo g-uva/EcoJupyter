@@ -36,7 +36,10 @@ interface IWelcomePage {
   handlePredictionClick: () => void;
 }
 
-export default function WelcomePage({ handleRealTimeClick, handlePredictionClick }: IWelcomePage) {
+export default function WelcomePage({
+  handleRealTimeClick,
+  handlePredictionClick
+}: IWelcomePage) {
   return (
     <Grid2 sx={styles.main}>
       <Typography variant="h4" sx={styles.title}>

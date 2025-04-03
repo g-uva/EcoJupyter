@@ -57,7 +57,6 @@ export default function ChartWrapper({
   }, [refreshRateS]);
 
   function handleRefreshClick() {
-    // alert('Refreshing...');
     if (iframeRef.current) {
       const copy_src = structuredClone(iframeRef.current.src);
       iframeRef.current.src = copy_src;
