@@ -33,9 +33,10 @@ const styles: Record<string, SxProps> = {
 
 interface IWelcomePage {
   handleRealTimeClick: () => void;
+  handlePredictionClick: () => void;
 }
 
-export default function WelcomePage({ handleRealTimeClick }: IWelcomePage) {
+export default function WelcomePage({ handleRealTimeClick, handlePredictionClick }: IWelcomePage) {
   return (
     <Grid2 sx={styles.main}>
       <Typography variant="h4" sx={styles.title}>
@@ -45,7 +46,7 @@ export default function WelcomePage({ handleRealTimeClick }: IWelcomePage) {
         <Button variant="outlined" onClick={handleRealTimeClick}>
           Real-time Tracking Monitor
         </Button>
-        <Button variant="outlined" disabled>
+        <Button variant="outlined" onClick={handlePredictionClick}>
           Resource Usage Prediction
         </Button>
       </Grid2>

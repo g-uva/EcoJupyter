@@ -6,7 +6,7 @@ import { Grid2 } from '@mui/material';
 import GoBackButton from '../components/GoBackButton';
 
 const CONFIG_BASE_URL = 'http://localhost:3000/';
-const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/behmsglt2r08wa/memory-and-cpu?orgId=1&from=1743616388014&to=1743620582189&timezone=browser&panelId=1&__feature.dashboardSceneSolo`;
+const DEFAULT_SRC_IFRAME = `${CONFIG_BASE_URL}d-solo/behmsglt2r08wa/memory-and-cpu?orgId=1&from=1743616284487&to=1743621999133&timezone=browser&theme=light&panelId=1&__feature.dashboardSceneSolo`;
 
 interface ICreateIFrame {
   src: string;

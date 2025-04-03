@@ -5,6 +5,7 @@ import ChartsPage from './pages/ChartsPage';
 import WelcomePage from './pages/WelcomePage';
 
 import VerticalLinearStepper from './components/VerticalLinearStepper';
+import GoBackButton from './components/GoBackButton';
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
@@ -27,9 +28,14 @@ const styles: Record<string, React.CSSProperties> = {
   }
 };
 
-function Prediction() {
+interface IPrediction {
+  handleGoBack: () => void;
+}
+
+function Prediction({ handleGoBack }: IPrediction) {
   return (
     <Grid2 sx={{ width: '100%', px: 3, py: 5 }}>
+      <GoBackButton handleClick={handleGoBack} />
       <VerticalLinearStepper />
     </Grid2>
   );
@@ -55,16 +61,20 @@ const App = (): JSX.Element => {
     setActivePageState(Page.ChartsPage);
   }
 
+  function handlePredictionClick() {
+    setActivePageState(Page.Prediction);
+  }
+
   function goToMainPage() {
     setActivePageState(Page.WelcomePage);
   }
 
   const ActivePage: Record<Page, React.JSX.Element> = {
     [Page.WelcomePage]: (
-      <WelcomePage handleRealTimeClick={handleRealTimeClick} />
+      <WelcomePage handleRealTimeClick={handleRealTimeClick} handlePredictionClick={handlePredictionClick} />
     ),
     [Page.ChartsPage]: <ChartsPage handleGoBack={goToMainPage} />,
-    [Page.Prediction]: <Prediction />
+    [Page.Prediction]: <Prediction handleGoBack={goToMainPage} />
   };
 
   return (
