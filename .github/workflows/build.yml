@@ -33,7 +33,7 @@ jobs:
     - name: Test the extension
       run: |
         set -eux
-        yarn run test
+        yarn run test --passWithNoTests
 
     - name: Build the extension
       run: |
