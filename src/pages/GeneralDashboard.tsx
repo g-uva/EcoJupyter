@@ -34,7 +34,7 @@ interface ITempIframe {
 function TempIframe({ keyIndex }: ITempIframe) {
   return (
     <iframe
-      src="http://localhost:3000/d-solo/behmsglt2r08wa/memory-and-cpu?orgId=1&from=1743658807612&to=1743659109100&timezone=browser&theme=light&panelId=1&__feature.dashboardSceneSolo"
+      src="http://localhost:3000/d-solo/behmsglt2r08wa/2025-04-08-demo?orgId=1&from=1743972420834&to=1743972720834&timezone=browser&refresh=auto&theme=light&panelId=3&__feature.dashboardSceneSolo"
       width="100%"
       height="400px"
       sandbox="allow-scripts allow-same-origin"
