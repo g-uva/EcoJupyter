@@ -10,7 +10,7 @@ export default function MapComponent() {
         latitude: 37.8,
         zoom: 14
       }}
-      style={{ width: 600, height: 400, border: '1px solid orange' }}
+      style={{ width: '100%', height: 400 }}
       mapStyle="https://api.maptiler.com/maps/openstreetmap/style.json?key=EbBHdB4yorH5ew69HEPJ"
     />
   );

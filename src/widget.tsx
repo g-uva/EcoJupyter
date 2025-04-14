@@ -1,10 +1,11 @@
 import React from 'react';
 import { ReactWidget } from '@jupyterlab/apputils';
-import { Paper } from '@mui/material';
+import { Grid2, Paper } from '@mui/material';
+import ChartsPage from './pages/ChartsPage';
+import WelcomePage from './pages/WelcomePage';
 
-// import BandHighLight from './components/BandHighLight';
-// import ElementHighlights from './components/ElementHighlights';
-import MapComponent from './components/map/MapComponent';
+import VerticalLinearStepper from './components/VerticalLinearStepper';
+import GoBackButton from './components/GoBackButton';
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
@@ -14,32 +15,37 @@ const styles: Record<string, React.CSSProperties> = {
     height: '100%',
     flexWrap: 'wrap',
     boxSizing: 'border-box',
-    padding: '3px'
+    padding: '3px',
+    overflow: 'auto'
   },
   grid: {
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: '0 1 50%',
-    width: '50%'
-    // border: '1px solid green',
-    // boxSizing: 'border-box',
+    flexDirection: 'column',
+    whiteSpace: 'wrap',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    flex: '0 1 100%',
+    width: '100%'
   }
 };
 
-function GridContent({ index }: { index: number }) {
-  switch (index) {
-    // case 1:
-    //   return <BandHighLight />;
-    // case 2:
-    //   return <ElementHighlights />;
-    // case 3:
-    //   return <BandHighLight />;
-    case 1:
-      return <MapComponent />;
-    default:
-      return <span>{'Grid element ' + String(index)}</span>;
-  }
+interface IPrediction {
+  handleGoBack: () => void;
+}
+
+function Prediction({ handleGoBack }: IPrediction) {
+  return (
+    <Grid2 sx={{ width: '100%', px: 3, py: 5 }}>
+      <GoBackButton handleClick={handleGoBack} />
+      <VerticalLinearStepper />
+    </Grid2>
+  );
+}
+
+export enum Page {
+  WelcomePage,
+  ChartsPage,
+  Prediction
 }
 
 /**
@@ -48,17 +54,36 @@ function GridContent({ index }: { index: number }) {
  * @returns The React component
  */
 const App = (): JSX.Element => {
-  const gridElements = Array.from(new Array(4)).map((_, index) => index + 1);
+  const [activePageState, setActivePageState] = React.useState<Page>(
+    Page.WelcomePage
+  );
+
+  function handleRealTimeClick() {
+    setActivePageState(Page.ChartsPage);
+  }
+
+  function handlePredictionClick() {
+    setActivePageState(Page.Prediction);
+  }
+
+  function goToMainPage() {
+    setActivePageState(Page.WelcomePage);
+  }
+
+  const ActivePage: Record<Page, React.JSX.Element> = {
+    [Page.WelcomePage]: (
+      <WelcomePage
+        handleRealTimeClick={handleRealTimeClick}
+        handlePredictionClick={handlePredictionClick}
+      />
+    ),
+    [Page.ChartsPage]: <ChartsPage handleGoBack={goToMainPage} />,
+    [Page.Prediction]: <Prediction handleGoBack={goToMainPage} />
+  };
 
   return (
     <div style={styles.main}>
-      {gridElements.map(value => {
-        return (
-          <Paper key={`grid-element-${value}`} style={styles.grid}>
-            <GridContent index={value} />
-          </Paper>
-        );
-      })}
+      <Paper style={styles.grid}>{ActivePage[activePageState]}</Paper>
     </div>
   );
 };

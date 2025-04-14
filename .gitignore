@@ -123,3 +123,9 @@ dmypy.json
 
 # Yarn cache
 .yarn/
+
+.yarnrc.yml
+yarn.lock
+
+.secrets
+data/**
