@@ -1,9 +1,11 @@
 name: "Step 1: Prep Release"
 on:
-  workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Build"]
+  #   types:
+  #     - completed
+  push:
+    branches: 'grafana-prometheus-experiment'
   workflow_dispatch:
     inputs:
       version_spec:
@@ -31,11 +33,11 @@ jobs:
   prep_release:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    steps:
-      - name: Debugging Environment
-        run: |
-          echo "Checking GITHUB_TOKEN permissions..."
-          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}
+      # steps:
+      #   - name: Debugging Environment
+      #     run: |
+      #       echo "Checking GITHUB_TOKEN permissions..."
+      #       curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}
       
       # - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
       # - name: Prep Release
