@@ -35,6 +35,15 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      
+      - name: Check Token Generation
+        run: |
+          if [ -z "${{ steps.app-token.outputs.token }}" ]; then
+            echo "Error: Token generation failed."
+            exit 1
+          else
+            echo "Token generated successfully."
+          fi
 
       - name: Populate Release
         id: populate-release
