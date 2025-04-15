@@ -33,6 +33,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+      - name: Debugging Environment
+        run: |
+          echo "Checking GITHUB_TOKEN permissions..."
+          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}
       - name: Prep Release
         id: prep-release
         uses: jupyter-server/jupyter_releaser/.github/actions/prep-release@v2
