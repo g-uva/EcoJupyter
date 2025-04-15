@@ -1,5 +1,9 @@
 name: "Step 2: Publish Release"
 on:
+  workflow_run:
+    workflows: ["Step 1: Prep Release"]
+    types:
+      - completed
   workflow_dispatch:
     inputs:
       branch:
@@ -57,3 +61,5 @@ jobs:
         run: |
           echo "Failed to Publish the Draft Release Url:"
           echo ${{ steps.populate-release.outputs.release_url }}
+permissions:
+  contents: write
