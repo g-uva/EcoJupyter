@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: grafana-prometheus-experiment
+    branches: master
   pull_request:
-    branches: 'grafana-prometheus-experiment'
+    branches: master
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
