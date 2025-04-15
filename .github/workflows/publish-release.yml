@@ -24,6 +24,9 @@ jobs:
       - name: Debug APP_ID
         run: |
           echo "APP_ID: ${{ vars.APP_ID }}"
+      - name: Debug APP_PRIVATE_KEY
+        run: |
+          echo "APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}"
       
       - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
