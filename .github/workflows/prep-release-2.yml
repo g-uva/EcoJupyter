@@ -1,4 +1,4 @@
-name: "Step 1: Prep Release"
+name: "Step 1: Prep Release 2"
 on:
   workflow_run:
     workflows: ["Build"]
@@ -28,7 +28,7 @@ on:
         required: false
         type: boolean
 jobs:
-  prep_release:
+  prep_release_2:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
