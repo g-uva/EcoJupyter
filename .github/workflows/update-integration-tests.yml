@@ -26,18 +26,18 @@ jobs:
         run: |
           gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions --raw-field 'content=+1'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASER_PAT }}
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASER_PAT }}
 
       - name: Get PR Info
         id: pr
         env:
           PR_NUMBER: ${{ github.event.issue.number }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASER_PAT }}
           GH_REPO: ${{ github.repository }}
           COMMENT_AT: ${{ github.event.comment.created_at }}
         run: |
@@ -54,7 +54,7 @@ jobs:
 
       - name: Checkout the branch from the PR that triggered the job
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASER_PAT }}
         run: gh pr checkout ${{ github.event.issue.number }}
 
       - name: Validate the fetched branch HEAD revision
@@ -82,7 +82,7 @@ jobs:
 
       - uses: jupyterlab/maintainer-tools/.github/actions/update-snapshots@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.RELEASER_PAT }}
           # Playwright knows how to start JupyterLab server
           start_server_script: 'null'
           test_folder: ui-tests
