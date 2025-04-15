@@ -21,7 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
     steps:
-      - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+      - name: Debug APP_ID
+        run: |
+          echo "APP_ID: ${{ vars.APP_ID }}"
+      
+          - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
       - uses: actions/create-github-app-token@v1
         id: app-token
