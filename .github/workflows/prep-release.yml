@@ -46,3 +46,5 @@ jobs:
       - name: "** Next Step **"
         run: |
           echo "Draft Release: ${{ steps.prep-release.outputs.release_url }}"
+permissions:
+  contents: write
