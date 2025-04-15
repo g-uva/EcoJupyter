@@ -20,8 +20,6 @@ jobs:
   publish_release:
     runs-on: ubuntu-latest
     environment: release
-    permissions:
-      id-token: write
     steps:
       - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
@@ -69,7 +67,6 @@ permissions:
   discussions: write
   id-token: write
   issues: write
-  metadata: write
   packages: write
   pages: write
   pull-requests: write

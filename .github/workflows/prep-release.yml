@@ -32,10 +32,6 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - name: bla
-        uses: actions/checkout@v3
-        with:
-          ref: grafana-prometheus-experiment
       - name: Clear Cache
         uses: actions/cache@v3
         with:

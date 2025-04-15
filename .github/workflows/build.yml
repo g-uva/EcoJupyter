@@ -15,6 +15,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Clear Cache
+      uses: actions/cache@v3
+      with:
+        path: /home/runner/.cache/pip
+        key: ${{ runner.os }}-pip-clear-cache-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-pip-clear-cache-
+    - name: Debugging Environment
+      run: |
+        echo "Checking GITHUB_TOKEN permissions..."
+        curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}
+
     - name: Checkout
       uses: actions/checkout@v4
 
