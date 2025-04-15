@@ -62,9 +62,9 @@ jobs:
       #     branch: "main"
       #     since: "2025-01-01"
       #     since_last_stable: true
-      - name: "** Next Step **"
-        run: |
-          echo "Draft Release: ${{ steps.prep-release.outputs.release_url }}"
+      # - name: "** Next Step **"
+      #   run: |
+      #     echo "Draft Release: ${{ steps.prep-release.outputs.release_url }}"
 permissions:
   actions: write
   attestations: write
