@@ -47,4 +47,16 @@ jobs:
         run: |
           echo "Draft Release: ${{ steps.prep-release.outputs.release_url }}"
 permissions:
+  attestations: write
+  checks: write
   contents: write
+  deployments: write
+  discussions: write
+  id-token: write
+  issues: write
+  metadata: write
+  packages: write
+  pages: write
+  pull-requests: write
+  security-events: write
+  statuses: write
