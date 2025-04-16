@@ -106,22 +106,22 @@ jobs:
   #   env:
   #     PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v4
+    # steps:
+    - name: Checkout
+      uses: actions/checkout@v4
 
-  #   - name: Base Setup
-  #     uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+    - name: Base Setup
+      uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
-  #   - name: Download extension package
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: extension-artifacts
+    - name: Download extension package
+      uses: actions/download-artifact@v4
+      with:
+        name: extension-artifacts
 
-  #   - name: Install the extension
-  #     run: |
-  #       set -eux
-  #       python -m pip install "jupyterlab>=4.0.0,<5" egi_jupyterlab_ext*.whl
+    - name: Install the extension
+      run: |
+        set -eux
+        python -m pip install "jupyterlab>=4.0.0,<5" egi_jupyterlab_ext*.whl
 
   #   - name: Install dependencies
   #     working-directory: ui-tests
@@ -130,12 +130,12 @@ jobs:
   #       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
   #     run: yarn install
 
-  #   - name: Set up browser cache
-  #     uses: actions/cache@v4
-  #     with:
-  #       path: |
-  #         ${{ github.workspace }}/pw-browsers
-  #       key: ${{ runner.os }}-${{ hashFiles('ui-tests/yarn.lock') }}
+    - name: Set up browser cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ${{ github.workspace }}/pw-browsers
+        key: ${{ runner.os }}-${{ hashFiles('ui-tests/yarn.lock') }}
 
   #   - name: Install browser
   #     run: yarn playwright install chromium
