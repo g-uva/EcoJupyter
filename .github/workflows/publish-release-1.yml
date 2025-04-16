@@ -56,7 +56,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           branch: ${{ github.event.inputs.branch }}
           release_url: ${{ github.event.inputs.release_url }}
-          steps_to_skip: "check-npm,publish-npm,publish-assets"
+          steps_to_skip: "check-npm"
 
       - name: Finalize Release
         id: finalize-release
@@ -67,6 +67,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           release_url: ${{ steps.populate-release.outputs.release_url }}
+          steps_to_skip: "publish-npm,publish-assets"
 
       - name: "** Next Step **"
         if: ${{ success() }}
