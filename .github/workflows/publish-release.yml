@@ -11,7 +11,8 @@ on:
         required: false
       release_url:
         description: "The URL of the draft GitHub release"
-        required: false
+        required: true
+        default: https://github.com/g-uva/jupyter-green-metrics # temporary, this is hardcoded for now.
       steps_to_skip:
         description: "Comma separated list of steps to skip"
         required: false
