@@ -1,4 +1,4 @@
-name: "Step 2: Publish Release 3"
+name: "Step 2: Publish Release"
 on:
   workflow_run:
     workflows: ["Step 1: Prep Release"]
@@ -44,6 +44,10 @@ jobs:
           else
             echo "Token generated successfully."
           fi
+      
+      - name: Check release URL
+        run: |
+          echo "Release URL: ${{ github.event.inputs.release_url }}"
 
       - name: Populate Release
         id: populate-release
