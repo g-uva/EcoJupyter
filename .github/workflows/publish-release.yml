@@ -1,4 +1,4 @@
-name: "Step 2: Publish Release 1"
+name: "Step 2: Publish Release"
 on:
   workflow_run:
     workflows: ["Step 1: Prep Release"]
@@ -15,7 +15,6 @@ on:
       steps_to_skip:
         description: "Comma separated list of steps to skip"
         required: false
-        default: "npm"
 
 jobs:
   publish_release:
@@ -57,7 +56,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           branch: ${{ github.event.inputs.branch }}
           release_url: ${{ github.event.inputs.release_url }}
-          steps_to_skip: "check-npm"
+          steps_to_skip: "check-npm,publish-npm"
 
       - name: Finalize Release
         id: finalize-release
