@@ -1,4 +1,4 @@
-name: "Step 2: Publish Release 2"
+name: "Step 2: Publish Release 3"
 on:
   workflow_run:
     workflows: ["Step 1: Prep Release"]
