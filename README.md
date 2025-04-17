@@ -2,13 +2,6 @@
 
 ![jupyter_green_metrics_logo](./assets/jupyter_green_metrics_logo.png)
 
-### To-dos
-
-- [ ] Description: directed to research infrastructures to measure the carbon impact.
-  - [ ] Agnostic, loosely coupled, interoperable and pluggable with any data center and infrastructure
-- [ ] Installation steps (commented out, put back in).
-- [ ] Badges: there are tools that automatically generate this.
-
 [![Github Actions Status](https://github.com/g-uva/egi-jupyterlab-extension.git/workflows/Build/badge.svg)](https://github.com/g-uva/egi-jupyterlab-extension.git/actions/workflows/build.yml)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/g-uva/egi-jupyterlab-extension.git/main?urlpath=lab)
 
