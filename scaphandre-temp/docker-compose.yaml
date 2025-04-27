@@ -9,6 +9,7 @@ services:
       bash -lc '
         # 1) create the Linux user & set its password
         useradd -m goncalo && echo "goncalo:goncalo" | chpasswd &&
+        useradd -m shashikant && echo "shashikant:shashikant" | chpasswd &&
 
         # 2) allow JupyterHub to auto-create system users
         export JUPYTERHUB_CREATE_SYSTEM_USERS=true &&
@@ -20,7 +21,7 @@ services:
         if [ ! -f /srv/jupyterhub/jupyterhub_config.py ]; then
           echo ">>> Generating jupyterhub_config.py"
           jupyterhub --generate-config -f /srv/jupyterhub/jupyterhub_config.py
-          echo "c.Authenticator.allowed_users = {\"goncalo\"}" \
+          echo "c.Authenticator.allowed_users = {\"goncalo\",\"shashikant\"}" \
             >> /srv/jupyterhub/jupyterhub_config.py
           echo "c.LocalAuthenticator.create_system_users = True" \
             >> /srv/jupyterhub/jupyterhub_config.py
