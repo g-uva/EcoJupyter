@@ -1,5 +1,6 @@
 # This file is taken from the original repository here: https://github.com/hubblo-org/scaphandre/tree/main/docker-compose
 # It has been changed so it sets the JupyterHub along with the Scaphandre metrics.
+
 services:
   jupyterhub:
     image: jupyterhub/jupyterhub:latest
