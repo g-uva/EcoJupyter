@@ -21,6 +21,10 @@ helm install jhub jupyterhub/jupyterhub \
 helm install monitoring prometheus-community/kube-prometheus-stack \
 -n monitoring --create-namespace \
 --values ./monitoring-config.yaml # Point to the configuration file for Monitoring.
+
+# Update any repository (in case the YAML file is changed).
+# Note: replace the namespace and repository accordingly.
+helm upgrade --install jhub jupyterhub/jupyterhub -n jhub --values ./jhub-config.yaml
 ```
 4. Apply PodMonitor and Nginx configurations.
 5. The app should be ready to use! 👍
