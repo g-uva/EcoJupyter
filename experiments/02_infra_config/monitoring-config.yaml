@@ -6,3 +6,7 @@ prometheus:
 grafana:
   adminUser: goncalo
   adminPassword: greendigit2025
+  config:
+    server:
+      root_url:  %(protocol)s://%(domain)s:%(http_port)s/grafana/
+      serve_from_sub_path: true

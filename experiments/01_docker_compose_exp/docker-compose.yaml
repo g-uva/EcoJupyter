@@ -1,6 +1,6 @@
 # This file is taken from the original repository here: https://github.com/hubblo-org/scaphandre/tree/main/docker-compose
-# It has been changed so it sets the JupyterHub along with the Scaphandre metrics.
-
+# It has been changed so it sets the JupyterHub
+# along with the Scaphandre metrics.
 services:
   jupyterhub:
     image: jupyterhub/jupyterhub:latest
@@ -11,6 +11,9 @@ services:
         # 1) create the Linux user & set its password
         useradd -m goncalo && echo "goncalo:goncalo" | chpasswd &&
         useradd -m shashikant && echo "shashikant:shashikant" | chpasswd &&
+        useradd -m yuri && echo "yuri:yuri" | chpasswd &&
+        useradd -m adnan && echo "adnan:adnan" | chpasswd &&
+        useradd -m quint && echo "quint:quint" | chpasswd &&
 
         # 2) allow JupyterHub to auto-create system users
         export JUPYTERHUB_CREATE_SYSTEM_USERS=true &&

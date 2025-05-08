@@ -6,6 +6,7 @@ proxy:
 hub:
   config:
     JupyterHub:
+      base_url: "/jupyter"
       tornado_settings:
         xheaders: true
     Authenticator:
@@ -78,3 +79,27 @@ singleuser:
       ports:
         - name: metrics
           containerPort: 8081
+# spec:
+#   rules:
+#   - host: mc-a4.lab.uvalight.net
+#     http:
+#       paths:
+#       - path: /jupyter
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: JupyterHub
+#             port:
+#               number: 80
+spec:
+  rules:
+  - host: mc-a4.lab.uvalight.net
+    http:
+      paths:
+      - path: /jupyter(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: proxy-public
+            port:
+              number: 80
