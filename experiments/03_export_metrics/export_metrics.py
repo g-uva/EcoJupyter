@@ -33,11 +33,12 @@ def main():
     )
     args = parser.parse_args()
 
-    prometheus_url = os.environ.get("PROM_URL")
+    # prometheus_url = os.environ.get("PROM_URL")
+    prometheus_url = "http://localhost:3000" # temporary for testing
     if not prometheus_url:
         raise RuntimeError("Please set PROM_URL environment variable to your Prometheus endpoint")
 
-    # Load Kubernetes config (from ~/.kube/config or in-cluster)
+    # Load Kubernetes config
     try:
         config.load_kube_config()
     except:
@@ -49,7 +50,12 @@ def main():
     # Ensure output directory exists
     os.makedirs(args.output_dir, exist_ok=True)
 
-    # List singleuser pods
+    # Discover all Scaphandre metric names
+    all_metric_names = prom.get_label_values(label_name="__name__")
+    scaph_metrics = [m for m in all_metric_names if m.startswith("scaph_")]
+    print(f"Found Scaphandre metrics: {scaph_metrics}")
+
+    # List all singleuser-server pods
     pods = v1.list_namespaced_pod(
         namespace=args.namespace,
         label_selector="component=singleuser-server"
@@ -57,43 +63,41 @@ def main():
 
     for pod in pods:
         pod_name = pod.metadata.name
-        creation_ts = pod.metadata.creation_timestamp
-        # Use deletion timestamp if pod is terminated
+        start_ts = pod.metadata.creation_timestamp
         end_ts = pod.metadata.deletion_timestamp or datetime.now(timezone.utc)
+        print(f"Processing pod {pod_name} from {start_ts} to {end_ts}")
 
-        print(f"Processing pod {pod_name}, start {creation_ts}, end {end_ts}")
+        # Create directory for this pod
+        pod_dir = os.path.join(args.output_dir, pod_name)
+        os.makedirs(pod_dir, exist_ok=True)
 
-        # Query Prometheus for scaphandre power consumption metric
-        metric_name = "scaph_process_power_consumption_microwatts"
-        try:
-            data = prom.get_metric_range_data(
-                metric_name=metric_name,
-                start_time=creation_ts,
-                end_time=end_ts,
-                label_config={"pod": pod_name}
-            )
-        except Exception as e:
-            print(f"Failed to fetch metrics for {pod_name}: {e}")
-            continue
+        for metric in scaph_metrics:
+            try:
+                data = prom.get_metric_range_data(
+                    metric_name=metric,
+                    start_time=start_ts,
+                    end_time=end_ts,
+                    label_config={"pod": pod_name}
+                )
+            except Exception as e:
+                print(f"Failed to fetch {metric} for {pod_name}: {e}")
+                continue
 
-        # Transform into DataFrame
-        # data is list of dicts: {'metric': {...}, 'values': [(ts, val), ...]}
-        if not data:
-            print(f"No data for {pod_name}")
-            continue
+            if not data:
+                print(f"No data for {metric} in {pod_name}")
+                continue
 
-        # We assume single time series per pod
-        series = data[0]
-        rows = []
-        for ts, val in series.get('values', []):
-            # Prom API returns ts as string of epoch float
-            timestamp = datetime.fromtimestamp(float(ts), tz=timezone.utc)
-            rows.append({'timestamp': timestamp, 'value_microwatts': float(val)})
+            # Assume a single timeseries per metric/pod
+            series = data[0]
+            rows = []
+            for ts, val in series.get('values', []):
+                timestamp = datetime.fromtimestamp(float(ts), tz=timezone.utc)
+                rows.append({'timestamp': timestamp, metric: float(val)})
 
-        df = pd.DataFrame(rows)
-        csv_path = os.path.join(args.output_dir, f"{pod_name}.csv")
-        df.to_csv(csv_path, index=False)
-        print(f"Written {len(df)} metric points to {csv_path}")
+            df = pd.DataFrame(rows)
+            csv_file = os.path.join(pod_dir, f"{metric}.csv")
+            df.to_csv(csv_file, index=False)
+            print(f"Written {len(df)} points for {metric} to {csv_file}")
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
