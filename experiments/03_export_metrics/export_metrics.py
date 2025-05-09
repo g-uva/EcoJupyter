@@ -19,7 +19,7 @@ from prometheus_api_client import PrometheusConnect
 from kubernetes import client, config
 import pandas as pd
 
-def export_metrics(namespace: str):
+def export_metrics():
     # Load in-cluster or local kubeconfig
     try:
         config.load_incluster_config()
@@ -28,6 +28,8 @@ def export_metrics(namespace: str):
         
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_root = f"./{timestamp}_metrics_export"
+    
+    namespace = "jhub"
 
     # Connect to Prometheus
     prom = PrometheusConnect(url=os.getenv("PROM_URL", "http://localhost:9090"), disable_ssl=True)
@@ -109,14 +111,6 @@ def generate_rocrate(output_root, namespace, experiment_id, start_time, end_time
     print(f"RO-Crate metadata generated at {metadata_path}")
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="Export Scaphandre metrics per pod and generate RO-Crate")
-    parser.add_argument("--namespace", default="jhub", help="Kubernetes namespace for JupyterHub")
-    # parser.add_argument("--output-dir", default="metrics_export", help="Directory to write outputs")
-    args = parser.parse_args()
-    export_metrics(args.namespace)
-
-# After saving this as export_scaphandre_metrics.py:
-# Run with: PROM_URL=http://<prom-server>:9090 python export_scaphandre_metrics.py --namespace jhub --output-dir ./metrics
+    export_metrics()
 
 
