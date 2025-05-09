@@ -6,6 +6,14 @@ This is a configuration for the server: https://mc-a4.lab.uvalight.net/.
 > The reference for the steps come from the official Zero to Jupyter documentation.
 1. Install Helm.
 2. Install Kubernetes and `kubectl`.
+```sh
+# If you're using SSH extension for VS code, make sure you have writing permissions:
+ls -l ~/<your_file>
+ls -ld ~ # Pointing to the /home/user/ root.
+
+# As long as you have sudo access rights, you should set this as follows:
+sudo chown -R $(whoami):$(whoami) ~ # Extending the automatic reading/writing access rights to the home folder.
+```
 3. Install all the repositories from Helm using the `yaml` files.
 ```sh
 # -------------

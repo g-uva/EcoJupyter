@@ -32,7 +32,7 @@ def export_metrics():
     namespace = "jhub"
 
     # Connect to Prometheus
-    prom = PrometheusConnect(url=os.getenv("PROM_URL", "http://localhost:9090"), disable_ssl=True)
+    prom = PrometheusConnect(url=os.getenv("PROM_URL", "http://localhost:8000"), disable_ssl=True)
     v1 = client.CoreV1Api()
 
     # Generate unique experiment ID (8 hex chars)
@@ -49,6 +49,9 @@ def export_metrics():
 
     for pod in pods.items:
         pod_name = pod.metadata.name
+        start_ts = pod.metadata.creation_timestamp
+        end_ts = pod.metadata.deletion_timestamp or datetime.now(timezone.utc)
+        
         # Create a per-pod experiment folder including pod name
         folder_name = f"{experiment_id}_{pod_name}_jupyter-experiment"
         pod_dir = os.path.join(output_root, folder_name)
@@ -59,8 +62,8 @@ def export_metrics():
             # Fetch the metric range over the session
             data = prom.get_metric_range_data(
                 metric_name=metric,
-                start_time=start_time,
-                end_time=end_time,
+                start_time=start_ts,
+                end_time=end_ts,
                 label_config={"pod": pod_name},
             )
             if not data:
@@ -81,9 +84,9 @@ def export_metrics():
             print(f"  → Wrote {len(df)} rows to {csv_path}")
 
     # Generate RO-Crate metadata for entire experiment
-    generate_rocrate(output_root, namespace, experiment_id, start_time, end_time, scaph_metrics, pods)
+    generate_rocrate(output_root, experiment_id, start_ts, end_ts, scaph_metrics, pods)
 
-def generate_rocrate(output_root, namespace, experiment_id, start_time, end_time, metrics, pods):
+def generate_rocrate(output_root, experiment_id, start_time, end_time, metrics, pods):
     # Build list of part file paths
     has_parts = []
     for pod in pods.items:

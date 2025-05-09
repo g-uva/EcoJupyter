@@ -8,20 +8,18 @@ proxy:
 
 hub:
   config:
-    Spawner:
-      post_stop_hook: |
-        def post_stop_hook(spawner):
-            import subprocess, os
-            # Namespace is usually spawner.namespace
-            ns = spawner.namespace
-            outdir = "/mnt/data"
-            # Call your exporter binary/script that's in the Hub container
-            subprocess.Popen([
-                "python3",
-                "/usr/local/bin/export_scaphandre_metrics.py",
-                "--namespace", ns,
-                "--output-dir", outdir
-            ])
+  #   Spawner:
+  #     post_stop_hook: |
+  #       def post_stop_hook(spawner):
+  #           import subprocess, os
+  #           ns = spawner.namespace
+  #           outdir = "/mnt/data"
+  #           subprocess.Popen([
+  #               "python3",
+  #               "/usr/local/bin/export_scaphandre_metrics.py",
+  #               "--namespace", ns,
+  #               "--output-dir", outdir
+  #           ])
     JupyterHub:
       baseUrl: "/jupyter"
       tornado_settings:
@@ -47,6 +45,30 @@ singleuser:
   image:
     name: jupyter/datascience-notebook
     tag: latest
+  
+  # extraEnv:
+  #   - name: POD_NAME
+  #     valueFrom:
+  #       fieldRef:
+  #         fieldPath: metadata.name
+
+  # extraPodConfig:
+  #   lifecycle:
+  #     preStop:
+  #       exec:
+  #         command:
+  #           - /bin/sh
+  #           - -c
+  #           - |
+  #             # grab the pod name from the container's hostname
+  #             pod="$(hostname)"
+  #             # run the exporter, passing it the pod name
+  #             python3 /usr/local/bin/export_scaphandre_metrics.py \
+  #               --namespace jhub \
+  #               --pod-name "$pod" \
+  #               --output-dir /mnt/data \
+  #             && sleep 5
+
 
   storage:
     extraVolumes:
@@ -93,7 +115,7 @@ singleuser:
       ports:
         - name: rawmetrics
           containerPort: 8080
-# Temporary fix
+    # Temporary fix
     - name: proxy-metrics
       image: nginx:stable-alpine
       volumeMounts:
