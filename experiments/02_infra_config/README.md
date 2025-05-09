@@ -25,6 +25,13 @@ helm install monitoring prometheus-community/kube-prometheus-stack \
 # Update any repository (in case the YAML file is changed).
 # Note: replace the namespace and repository accordingly.
 helm upgrade --install jhub jupyterhub/jupyterhub -n jhub --values ./jhub-config.yaml
+
+metrics/
+└── 1a2b3c4d_jupyter-goncalo_jupyter-experiment/
+    ├── scaph_host_energy_microwatts.csv
+    ├── scaph_process_power_consumption.csv
+    └── ... other scaph_*.csv files
+ro-crate-metadata.json
 ```
 4. Apply PodMonitor and Nginx configurations.
 5. The app should be ready to use! 👍
