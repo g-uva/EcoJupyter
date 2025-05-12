@@ -34,12 +34,26 @@ helm install monitoring prometheus-community/kube-prometheus-stack \
 # Note: replace the namespace and repository accordingly.
 helm upgrade --install jhub jupyterhub/jupyterhub -n jhub --values ./jhub-config.yaml
 
-metrics/
+
+export-metrics/
 └── 1a2b3c4d_jupyter-goncalo_jupyter-experiment/
     ├── scaph_host_energy_microwatts.csv
     ├── scaph_process_power_consumption.csv
     └── ... other scaph_*.csv files
 ro-crate-metadata.json
 ```
+
+#### Example notebooks
+
+- [Workflow 1](https://github.com/shashikantilager/data-center-characterization) *(Just for reference, please read the instructions to put the data into the `/data/...` folder).*
+    1. [Notebook from Shashikant](https://drive.google.com/file/d/1FUi9xw3Y0VuzUhbqicEM2HnDONcNtgwB/view?usp=drive_link)
+    2. [Dataset 01](https://drive.google.com/file/d/1cW7jggF2-TmPBrQEpJDtx0vOYs5Me8Cg/view?usp=drive_link)
+    3. [Dataset 02](https://drive.google.com/file/d/1svqM1wrkxtCk9nZ90aJEvXGlBnNr8kRN/view?usp=drive_link)
+
+ 
+- [Workflow 2](https://github.com/atlarge-research/2024-icpads-hpc-workload-characterization)
+- Enol's notebook
+
+
 4. Apply PodMonitor and Nginx configurations.
 5. The app should be ready to use! 👍
