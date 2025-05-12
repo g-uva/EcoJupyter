@@ -1,7 +1,13 @@
-### GreenDIGIT Infra config
-This is a configuration for the server: https://mc-a4.lab.uvalight.net/.
+###  `jhub-helm-config` repository
+This is the repository that contains the configuration files for the Helm Zero to Jupyter Kubernetes cluster with Scaphandre.
 
-- [ ] Move this to a separate repository.
+This is a configuration for the server: https://mc-a4.lab.uvalight.net/.
+> If you want to have access to the server (filesystem and others), please contact g.j.teixeiradepinhoferreira@uva.nl.
+
+To install the repo, just run: `git clone git@github.com:g-uva/jhub-helm-config.git`.
+- Repository on Github: https://github.com/g-uva/jhub-helm-config.
+
+
 
 > The reference for the steps come from the official Zero to Jupyter documentation.
 1. Install Helm.
@@ -43,16 +49,29 @@ export-metrics/
 ro-crate-metadata.json
 ```
 
-#### Example notebooks
+#### Run workflows and extract metrics (examples)
+For the moment, the configuration files can be found in `/home/goncalo/jhub-helm-config/export-metrics-pod/`.
+The only relevant files are:
+- Files to be run **outside** of the cluster (this should be done, not to worry about the Kubernetes-only user):
+     - `pod-reader-rolebinding.yaml`: It allows Jupyter to read Kube and Pod configuration from within the Pod.
+          - You must run `kubectl apply -f export-metrics-pod/pod-reader-rolebinding.yaml` during the configuration on the local server, outside of the Kubernetes cluster.
+- Files to be copied and ran inside the Jupyter Notebook interface:
+     - `export_metrics_ownpod.py`: copy it to the `root` (typically `/home/jovyan`).
+     - `export-metrics.sh`: copy it to the `root` + execute `chmod +x ./export-metrics.sh` in order to make it executable.
 
+##### Example notebooks tutorial
+> For the moment, some example notebooks can be used to simulate the workflow.
+- Download the script files from the [Google Drive folder](https://drive.google.com/drive/folders/1NuyVLMKWd6GW7lNOmeb9H2g25PlrpqXT?usp=drive_link).
+> The example notebooks' data can be downloaded from the following links:
 - [Workflow 1](https://github.com/shashikantilager/data-center-characterization) *(Just for reference, please read the instructions to put the data into the `/data/...` folder).*
     1. [Notebook from Shashikant](https://drive.google.com/file/d/1FUi9xw3Y0VuzUhbqicEM2HnDONcNtgwB/view?usp=drive_link)
     2. [Dataset 01](https://drive.google.com/file/d/1cW7jggF2-TmPBrQEpJDtx0vOYs5Me8Cg/view?usp=drive_link)
-    3. [Dataset 02](https://drive.google.com/file/d/1svqM1wrkxtCk9nZ90aJEvXGlBnNr8kRN/view?usp=drive_link)
-
- 
+    3. [Dataset 02](https://drive.google.com/file/d/1svqM1wrkxtCk9nZ90aJEvXGlBnNr8kRN/view?usp=drive_link) 
 - [Workflow 2](https://github.com/atlarge-research/2024-icpads-hpc-workload-characterization)
-- Enol's notebook
+- Enol's notebook (not done yet).
+
+##### Exiting the notebook
+For the moment, in order to "kill" the pod, the server must be stopped. To do that you must go to `File > Hub Control Panel` and click the button `Stop my server`
 
 
 4. Apply PodMonitor and Nginx configurations.
