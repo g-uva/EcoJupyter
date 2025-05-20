@@ -1,12 +1,22 @@
+import { Grid2 } from '@mui/material';
 import React from 'react';
+import GoBackButton from '../components/GoBackButton';
 
-export default function GrafanaPage() {
+interface IGrafanaPage {
+  handleGoBack: () => void;
+}
+export default function GrafanaPage({ handleGoBack }: IGrafanaPage) {
   return (
-    <iframe
-      src="http://localhost:3000/d/abcd1234/my-dashboard?orgId=1&kiosk"
-      width="100%"
-      height="600"
-      style={{ border: 'none', overflow: 'hidden' }}
-    ></iframe>
+    <Grid2 sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Grid2 sx={{ display: 'flex' }}>
+        <GoBackButton handleClick={handleGoBack} />
+      </Grid2>
+      <iframe
+        src="http://localhost:3000/"
+        width="100%"
+        height="600"
+        style={{ border: 'none' }}
+      ></iframe>
+    </Grid2>
   );
 }

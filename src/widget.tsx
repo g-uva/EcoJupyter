@@ -88,7 +88,7 @@ const App = (): JSX.Element => {
     ),
     [Page.ChartsPage]: <ChartsPage handleGoBack={goToMainPage} />,
     [Page.Prediction]: <Prediction handleGoBack={goToMainPage} />,
-    [Page.Grafana]: <GrafanaPage />
+    [Page.Grafana]: <GrafanaPage handleGoBack={goToMainPage} />
   };
 
   return (
