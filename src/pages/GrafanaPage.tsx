@@ -2,7 +2,7 @@ import { Grid2 } from '@mui/material';
 import React from 'react';
 import GoBackButton from '../components/GoBackButton';
 
-const mc_grafana_url = 'https://mc-a4.lab.uvalight.net/grafana/'
+const mc_grafana_url = 'https://mc-a4.lab.uvalight.net/grafana/';
 
 interface IGrafanaPage {
   handleGoBack: () => void;
