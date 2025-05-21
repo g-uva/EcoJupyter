@@ -1,6 +1,4 @@
-## 🌱🌍♻️ Jupyter Green Metrics (GreenDIGIT project)
-
-![jupyter_green_metrics_logo](./assets/jupyter_green_metrics_logo.png)
+## 🌱🌍♻️ EcoJupyter (GreenDIGIT project)
 
 <!-- [![Github Actions Status](https://github.com/g-uva/egi-jupyterlab-extension.git/workflows/Build/badge.svg)](https://github.com/g-uva/egi-jupyterlab-extension.git/actions/workflows/build.yml)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/g-uva/egi-jupyterlab-extension.git/main?urlpath=lab) -->
