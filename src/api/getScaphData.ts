@@ -35,7 +35,7 @@ export default async function getScaphData() {
   const start = end - 3600; // last hour
   const step = 15;
 
-  const results: Map<string, number[][]> = new Map();
+  const results: Map<string, [number, string][]> = new Map();
 
   for (const metricName of metrics) {
     const metricData = await getMetricData(
