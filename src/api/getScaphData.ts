@@ -22,7 +22,7 @@ async function getScaphMetrics(prometheusUrl: string): Promise<string[]> {
   return data.data.filter((name: string) => name.startsWith('scaph_'));
 }
 
-async function main() {
+export default async function getScaphData() {
   const prometheusUrl = 'http://localhost:9090';
   const metrics: string[] = [];
   await getScaphMetrics(prometheusUrl).then(response =>
@@ -35,6 +35,8 @@ async function main() {
   const start = end - 3600; // last hour
   const step = 15;
 
+  const results: Map<string, number[][]> = new Map();
+
   for (const metricName of metrics) {
     const metricData = await getMetricData(
       prometheusUrl,
@@ -43,8 +45,9 @@ async function main() {
       end,
       step
     );
-    console.log(metricData.data.result);
+    const data = metricData.data.result[0].values; // For some reason the response is within a [].
+    results.set(metricName, data);
   }
-}
 
-main();
+  return results;
+}
