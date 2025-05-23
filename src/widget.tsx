@@ -6,6 +6,7 @@ import WelcomePage from './pages/WelcomePage';
 
 import VerticalLinearStepper from './components/VerticalLinearStepper';
 import GoBackButton from './components/GoBackButton';
+import GrafanaPage from './pages/GrafanaPage';
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
@@ -47,7 +48,8 @@ function Prediction({ handleGoBack }: IPrediction) {
 export enum Page {
   WelcomePage,
   ChartsPage,
-  Prediction
+  Prediction,
+  Grafana
 }
 
 /**
@@ -68,6 +70,10 @@ const App = (): JSX.Element => {
     setActivePageState(Page.Prediction);
   }
 
+  function handleGrafanaClick() {
+    setActivePageState(Page.Grafana);
+  }
+
   function goToMainPage() {
     setActivePageState(Page.WelcomePage);
   }
@@ -77,10 +83,12 @@ const App = (): JSX.Element => {
       <WelcomePage
         handleRealTimeClick={handleRealTimeClick}
         handlePredictionClick={handlePredictionClick}
+        handleGrafanaClick={handleGrafanaClick}
       />
     ),
     [Page.ChartsPage]: <ChartsPage handleGoBack={goToMainPage} />,
-    [Page.Prediction]: <Prediction handleGoBack={goToMainPage} />
+    [Page.Prediction]: <Prediction handleGoBack={goToMainPage} />,
+    [Page.Grafana]: <GrafanaPage handleGoBack={goToMainPage} />
   };
 
   return (

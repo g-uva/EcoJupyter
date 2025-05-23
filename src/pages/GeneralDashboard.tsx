@@ -1,23 +1,14 @@
-import { Paper } from '@mui/material';
-import React from 'react';
-
-// import BandHighLight from '../components/BandHighLight';
-// import ElementHighlights from '../components/ElementHighlights';
-// import MapComponent from '../components/map/MapComponent';
-
-/**
- * This is something temporary. Just for the demo on April 8th, on All-Hands Meeting for GreenDIGIT.
- */
-const chartLinks = [
-  // CPU Usage: used and total
-  'http://localhost:3000/d-solo/behmsglt2r08wa/2025-04-08-demo?orgId=1&from=1743669689152&to=1743691289152&timezone=browser&theme=light&panelId=2&__feature.dashboardSceneSolo',
-  // Memory used
-  'http://localhost:3000/d-solo/behmsglt2r08wa/2025-04-08-demo?orgId=1&from=1743669689152&to=1743691289152&timezone=browser&theme=light&panelId=3&__feature.dashboardSceneSolo',
-  // Network received/sent
-  'http://localhost:3000/d-solo/behmsglt2r08wa/2025-04-08-demo?orgId=1&from=1743669689152&to=1743691289152&timezone=browser&theme=light&panelId=4&__feature.dashboardSceneSolo',
-  // Thread Nr.
-  'http://localhost:3000/d-solo/behmsglt2r08wa/2025-04-08-demo?orgId=1&from=1743670340144&to=1743691940144&timezone=browser&theme=light&panelId=5&__feature.dashboardSceneSolo'
-];
+import React, { useEffect, useState } from 'react';
+import {
+  Paper,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  CircularProgress
+} from '@mui/material';
+import ScaphChart from '../components/ScaphChart';
+import getScaphData from '../api/getScaphData';
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
@@ -34,65 +25,64 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
-    // flex: '0 1 50%'
-    // width: '50%'
-    // border: '1px solid green',
-    // boxSizing: 'border-box',
   }
 };
 
-interface ITempIframe {
-  keyIndex: number;
-  url: string;
-}
-
-function TempIframe({ keyIndex, url }: ITempIframe) {
-  return (
-    <iframe
-      src={url}
-      width="100%"
-      height="400px"
-      sandbox="allow-scripts allow-same-origin"
-      // ref={iframeRef}
-      id={`iframe-item-${keyIndex}`}
-      style={{ border: 'none', margin: '5px' }}
-    />
-  );
-}
-
 export default function GeneralDashboard() {
-  function GridContent({ index }: { index: number }) {
-    return <TempIframe keyIndex={index} url={chartLinks[index]} />;
-    // switch (index) {
-    //   case 1:
-    //     return <TempIframe keyIndex={1} />;
-    //   case 2:
-    //     return <TempIframe keyIndex={2} />;
-    //   case 3:
-    //     return <MapComponent />;
-    //   default:
-    //     return <span>{'Grid element ' + String(index)}</span>;
-    // }
-  }
+  const [metrics, setMetrics] = useState<string[]>([]);
+  const [dataMap, setDataMap] = useState<Map<string, [number, string][]>>(
+    new Map()
+  );
+  const [selectedMetric, setSelectedMetric] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const gridElements = Array.from(new Array(chartLinks.length));
+  useEffect(() => {
+    setLoading(true);
+    getScaphData().then(results => {
+      setDataMap(results);
+      const keys = Array.from(results.keys());
+      setMetrics(keys);
+      setSelectedMetric(keys[0] || '');
+      setLoading(false);
+    });
+  }, [selectedMetric]);
 
   return (
     <div style={styles.main}>
-      {gridElements.map((value: number, index: number) => {
-        return (
-          <Paper
-            key={`grid-element-${value}`}
-            style={{
-              ...styles.grid
-              // minWidth: value === 3 ? '100%' : '50%',
-              // flex: value === 3 ? '0 1 100%' : '0 1 50%'
-            }}
-          >
-            <GridContent index={index} />
-          </Paper>
-        );
-      })}
+      <Paper
+        key="grid-element-main"
+        style={{ ...styles.grid, flexDirection: 'column', minWidth: 800 }}
+      >
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <>
+            <FormControl
+              variant="outlined"
+              size="small"
+              style={{ margin: 16, minWidth: 200 }}
+            >
+              <InputLabel id="metric-label">Metric</InputLabel>
+              <Select
+                labelId="metric-label"
+                value={selectedMetric}
+                label="Metric"
+                onChange={e => setSelectedMetric(e.target.value as string)}
+              >
+                {metrics.map(metric => (
+                  <MenuItem key={metric} value={metric}>
+                    {metric}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <ScaphChart
+              key={selectedMetric}
+              rawData={dataMap.get(selectedMetric) || []}
+            />
+          </>
+        )}
+      </Paper>
     </div>
   );
 }
