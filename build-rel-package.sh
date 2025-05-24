@@ -5,12 +5,12 @@ set -e  # Exit on error
 # Activate conda env
 CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
-conda activate jupyterlab-ext
+conda activate egi-jupyterlab-ext
 echo "Conda environment 'jupyterlab-ext' activated."
 
 # Auto-increment version in package.json
 echo "Bumping package.json version..."
-PACKAGE_JSON="egi_jupyterlab_ext/labextension/package.json"
+PACKAGE_JSON="package.json"
 
 # Bump patch version using jq
 if command -v jq &> /dev/null; then
@@ -30,8 +30,10 @@ rm -rf dist/ build/ *.egg-info
 
 # Build the package
 echo "Building the package..."
+python3 -m venv build-env
+source build-env/bin/activate
 pip install build
-python -m build -s
+python3 -m build -s
 
 # Upload to PyPI
 echo "Uploading the package to PyPI..."
