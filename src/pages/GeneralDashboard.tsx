@@ -39,6 +39,11 @@ export default function GeneralDashboard() {
   useEffect(() => {
     setLoading(true);
     getScaphData().then(results => {
+      if (results.size === 0) {
+        console.error('No metrics found');
+        setLoading(false);
+        return;
+      }
       setDataMap(results);
       const keys = Array.from(results.keys());
       setMetrics(keys);
